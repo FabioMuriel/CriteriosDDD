@@ -66,7 +66,7 @@ namespace Infrastructure.src.repository
         {
             using (var context = new AppDbContext())
             {
-                rooms.ValidarRoom(rooms);
+                ValidationHelper.ValidateEntity(rooms);
                 context.Rooms.Update(rooms);
                 context.SaveChanges();
             }

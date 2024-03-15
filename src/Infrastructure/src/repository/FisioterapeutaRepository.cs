@@ -57,7 +57,7 @@ namespace Infrastructure.src.repository
         {
             using (var context = new AppDbContext())
             {
-                fisioterapeuta.ValidarFisioreapeuta(fisioterapeuta);
+                ValidationHelper.ValidateEntity(fisioterapeuta);
                 context.Update(fisioterapeuta);
                 context.SaveChanges();
             }

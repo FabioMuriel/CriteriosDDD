@@ -46,7 +46,6 @@ namespace Infrastructure.src.repository
             using (var context = new AppDbContext())
             {
                 ValidationHelper.ValidateEntity(zona);
-                zona.ValidarZona(zona);
                 int lasId = context.Zonas.Max(x => x.ZonaId) + 1;
                 zona.ZonaId = lasId;
                 context.Zonas.Add(zona);
@@ -58,7 +57,7 @@ namespace Infrastructure.src.repository
         {
             using (var context = new AppDbContext())
             {
-                zona.ValidarZona(zona);
+                ValidationHelper.ValidateEntity(zona);
                 context.Zonas.Update(zona);
                 context.SaveChanges();
             }

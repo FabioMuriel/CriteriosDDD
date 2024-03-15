@@ -2,6 +2,7 @@ using Infrastructure.contexto;
 using CriteriosDominio.Dominio.Modelos.Entidades;
 using Infrastructure.src.interfaces;
 using CriteriosDominio.Dominio.Servicios;
+using CriteriosDominio.Dominio.Helpers;
 
 namespace Infrastructure.src.repository
 {
@@ -50,7 +51,7 @@ namespace Infrastructure.src.repository
         {
             using (var context = new AppDbContext())
             {
-                sched.ValidarSched(sched);
+                ValidationHelper.ValidateEntity(sched);
                 int lasId = context.Sched.Max(x => x.SchedId) + 1;
                 sched.SchedId = lasId;
                 context.Sched.Add(sched);
@@ -62,7 +63,7 @@ namespace Infrastructure.src.repository
         {
             using (var context = new AppDbContext())
             {
-                sched.ValidarSched(sched);
+                ValidationHelper.ValidateEntity(sched);
                 context.Sched.Update(sched);
                 context.SaveChanges();
             }
