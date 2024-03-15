@@ -27,5 +27,19 @@ namespace CriteriosDeProgramacion.controller
             _roomsRepository.AddRooms(rooms);
             return Ok();
         }
+
+        [HttpPut]
+        public IActionResult UpdateRooms([FromBody] Rooms rooms)
+        {
+            _roomsRepository.UpdateRooms(rooms);
+            return Ok();
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult DeleteRooms(int id)
+        {
+            _roomsRepository.DeleteRooms(id);
+            return Ok();
+        }
     }
 }

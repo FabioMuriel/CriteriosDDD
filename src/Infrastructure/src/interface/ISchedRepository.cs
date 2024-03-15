@@ -6,5 +6,7 @@ namespace Infrastructure.src.interfaces
     {
         List<Sched> GetSched();
         void AddSched(Sched sched);
+        void UpdateSched(Sched sched);
+        void DeleteSched(int id);
     }
 }

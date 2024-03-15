@@ -59,5 +59,25 @@ namespace Infrastructure.src.repository
                 return context.Rooms.ToList();
             }
         }
+
+        public void UpdateRooms(Rooms rooms)
+        {
+            using (var context = new AppDbContext())
+            {
+                context.Rooms.Update(rooms);
+                context.SaveChanges();
+            }
+        }
+
+        public void DeleteRooms(int id)
+        {
+            using (var context = new AppDbContext())
+            {
+                var room = context.Rooms.Find(id);
+                context.Rooms.Remove(room);
+                context.SaveChanges();
+            }
+        }
+
     }
 }

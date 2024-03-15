@@ -6,5 +6,10 @@ namespace Infrastructure.src.interfaces
     {
         void AddRooms(Rooms rooms);
         List<Rooms> GetRooms();
+
+        void UpdateRooms(Rooms rooms);
+
+        void DeleteRooms(int id);
+
     }
 }

@@ -69,5 +69,24 @@ namespace Infrastructure.src.repository
                 }
             }
         }
+
+        public void UpdateSched(Sched sched)
+        {
+            using (var context = new AppDbContext())
+            {
+                context.Sched.Update(sched);
+                context.SaveChanges();
+            }
+        }
+
+        public void DeleteSched(int id)
+        {
+            using (var context = new AppDbContext())
+            {
+                var sched = context.Sched.FirstOrDefault(x => x.SchedId == id);
+                context.Sched.Remove(sched);
+                context.SaveChanges();
+            }
+        }
     }
 }

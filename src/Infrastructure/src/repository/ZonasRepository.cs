@@ -42,5 +42,34 @@ namespace Infrastructure.src.repository
             }
         }
 
+        public void AddZona(Zona zona)
+        {
+            using (var context = new AppDbContext())
+            {
+                int lasId = context.Zonas.Max(x => x.ZonaId) + 1;
+                zona.ZonaId = lasId;
+                context.Zonas.Add(zona);
+                context.SaveChanges();
+            }
+        }
+
+        public void UpdateZona(Zona zona)
+        {
+            using (var context = new AppDbContext())
+            {
+                context.Zonas.Update(zona);
+                context.SaveChanges();
+            }
+        }
+
+        public void DeleteZona(int id)
+        {
+            using (var context = new AppDbContext())
+            {
+                var zona = context.Zonas.Find(id);
+                context.Zonas.Remove(zona);
+                context.SaveChanges();
+            }
+        }
     }
 }

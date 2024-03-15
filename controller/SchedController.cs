@@ -26,5 +26,18 @@ namespace CriteriosDeProgramacion.controller
         {
             return _schedRepository.GetSched();
         }
+
+        [HttpPut]
+        public void UpdateSched(Sched sched)
+        {
+            _schedRepository.UpdateSched(sched);
+        }
+
+        [HttpDelete("{id}")]
+        public void DeleteSched(int id)
+        {
+            _schedRepository.DeleteSched(id);
+        }
+
     }
 }
