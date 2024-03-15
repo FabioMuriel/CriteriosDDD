@@ -1,0 +1,25 @@
+# Archivos de depuración
+*.pdb
+*.ipdb
+*.dump
+*.stackdump
+
+# Archivos generados por compilación
+*.o
+*.obj
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Archivos generados por ejecución
+*.log
+*.log.*
+*.tmp
+*.bak
+*.swp
+*.cache
+*.class
+*.jar
+*.war
+*.ear
