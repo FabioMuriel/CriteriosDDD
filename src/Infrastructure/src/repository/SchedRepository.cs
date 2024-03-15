@@ -7,12 +7,8 @@ namespace Infrastructure.src.repository
 {
     public class SchedRepository : ISchedRepository
     {
-        private readonly ValidadorDeRestriccionesDeZonas _validadorDeRestriccionesDeZonas;
-
-        public SchedRepository(ValidadorDeRestriccionesDeZonas validadorDeRestriccionesDeZonas)
+        public SchedRepository()
         {
-            _validadorDeRestriccionesDeZonas = validadorDeRestriccionesDeZonas;
-
             using (var context = new AppDbContext())
             {
                 if (!context.Sched.Any())
@@ -58,15 +54,8 @@ namespace Infrastructure.src.repository
             {
                 int lasId = context.Sched.Max(x => x.SchedId) + 1;
                 sched.SchedId = lasId;
-                if (_validadorDeRestriccionesDeZonas.Validar(sched, context.Sched.ToList()))
-                {
-                    context.Sched.Add(sched);
-                    context.SaveChanges();
-                }
-                else
-                {
-                    return;
-                }
+                context.Sched.Add(sched);
+                context.SaveChanges();
             }
         }
 

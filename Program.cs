@@ -1,3 +1,4 @@
+using CriteriosDominio.Dominio.interfaces;
 using CriteriosDominio.Dominio.Servicios;
 using Infrastructure.src.interfaces;
 using Infrastructure.src.repository;
@@ -8,6 +9,10 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
+        //Services
+        builder.Services.AddScoped<IValidadorDeRestriccionesDeZonas, ValidadorDeRestriccionesDeZonas>();
+
+        //Repositories
         builder.Services.AddScoped<IZonaRepository, ZonasRepository>();
         builder.Services.AddScoped<IRoomsRepository, RoomsRepository>();
         builder.Services.AddScoped<IRestriccionesDeZonasRepository, RestriccionesDeZonasRepository>();
