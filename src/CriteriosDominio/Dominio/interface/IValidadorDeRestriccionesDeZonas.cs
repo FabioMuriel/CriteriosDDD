@@ -2,7 +2,9 @@ namespace CriteriosDominio.Dominio.interfaces
 {
     public interface IValidadorDeRestriccionesDeZonas
     {
-        IValidadorDeRestriccionesDeZonasResult Validar(IRestriccionesDeZonasRequest request);
+        IValidadorDeRestriccionesDeZonasResult ValidarRestricciones(IRestriccionesDeZonasRequest request);
+        List<String> ValidateService(IRestriccionesDeZonasRequest request);
+
     }
 
     public interface IValidadorDeRestriccionesDeZonasResult

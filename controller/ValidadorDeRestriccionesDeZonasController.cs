@@ -18,7 +18,7 @@ namespace CriteriosDeProgramacion.controller
         [HttpPost]
         public IActionResult Validar([FromBody] ValidadorDeRestriccionesDeZonasRequest request)
         {
-            var result = _validadorDeRestriccionesDeZonas.Validar(request);
+            var result = _validadorDeRestriccionesDeZonas.ValidarRestricciones(request);
 
             if (!result.Success)
             {
