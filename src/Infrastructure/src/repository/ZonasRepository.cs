@@ -1,6 +1,7 @@
 using Infrastructure.contexto;
 using CriteriosDominio.Dominio.Modelos.Entidades;
 using Infrastructure.src.interfaces;
+using CriteriosDominio.Dominio.Helpers;
 
 namespace Infrastructure.src.repository
 {
@@ -16,13 +17,11 @@ namespace Infrastructure.src.repository
                 {
                     new Zona
                     {
-                        ZonaId = 1,
                         Nombre = "CAMILLA",
                         Rooms = "1-1-1-1-1-1-1-1-1-1-0-0-0-0-0-0-0-0",
                     },
                     new Zona
                     {
-                        ZonaId = 2,
                         Nombre = "CAMILLA",
                         Rooms = "0-0-0-0-0-0-0-0-0-0-1-1-1-1-1-1-1-1"
                     }
@@ -46,6 +45,8 @@ namespace Infrastructure.src.repository
         {
             using (var context = new AppDbContext())
             {
+                ValidationHelper.ValidateEntity(zona);
+                zona.ValidarZona(zona);
                 int lasId = context.Zonas.Max(x => x.ZonaId) + 1;
                 zona.ZonaId = lasId;
                 context.Zonas.Add(zona);
@@ -57,6 +58,7 @@ namespace Infrastructure.src.repository
         {
             using (var context = new AppDbContext())
             {
+                zona.ValidarZona(zona);
                 context.Zonas.Update(zona);
                 context.SaveChanges();
             }

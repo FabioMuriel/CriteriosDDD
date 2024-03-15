@@ -1,6 +1,7 @@
 using Infrastructure.contexto;
 using CriteriosDominio.Dominio.Modelos.Entidades;
 using Infrastructure.src.interfaces;
+using CriteriosDominio.Dominio.Helpers;
 
 namespace Infrastructure.src.repository
 {
@@ -17,13 +18,11 @@ namespace Infrastructure.src.repository
                     var fisioterapeutas = new List<Fisioterapeuta> {
                         new Fisioterapeuta
                         {
-                            FisioterapeutaId = 1,
                             Nombre = "Juan",
                             Apellido = "Perez"
                         },
                         new Fisioterapeuta
                         {
-                            FisioterapeutaId = 2,
                             Nombre = "Pedro",
                             Apellido = "Gomez"
                         }
@@ -48,8 +47,7 @@ namespace Infrastructure.src.repository
         {
             using (var context = new AppDbContext())
             {
-                int lasId = context.Fisioterapeuta.Max(x => x.FisioterapeutaId) + 1;
-                fisioterapeuta.FisioterapeutaId = lasId;
+                ValidationHelper.ValidateEntity(fisioterapeuta);
                 context.Add(fisioterapeuta);
                 context.SaveChanges();
             }
@@ -59,6 +57,7 @@ namespace Infrastructure.src.repository
         {
             using (var context = new AppDbContext())
             {
+                fisioterapeuta.ValidarFisioreapeuta(fisioterapeuta);
                 context.Update(fisioterapeuta);
                 context.SaveChanges();
             }

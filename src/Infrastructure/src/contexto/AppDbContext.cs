@@ -21,11 +21,23 @@ namespace Infrastructure.contexto
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Zona>().HasKey(z => z.ZonaId);
+            modelBuilder.Entity<Zona>()
+            .Property(z => z.ZonaId)
+            .ValueGeneratedOnAdd();
+
             modelBuilder.Entity<Rooms>().HasKey(r => r.RoomId);
-            modelBuilder.Entity<RestriccionesDeZonas>().HasKey(rz => rz.RestriccionesDeZonasId);
-            modelBuilder.Entity<Fisioterapeuta>().HasKey(f => f.FisioterapeutaId);
-            modelBuilder.Entity<Sched>().HasKey(s => s.SchedId);
+
+            modelBuilder.Entity<RestriccionesDeZonas>()
+            .Property(r => r.RestriccionesDeZonasId)
+            .ValueGeneratedOnAdd();
+
+            modelBuilder.Entity<Fisioterapeuta>()
+            .Property(f => f.FisioterapeutaId)
+            .ValueGeneratedOnAdd();
+
+            modelBuilder.Entity<Sched>()
+            .Property(s => s.SchedId)
+            .ValueGeneratedOnAdd();
 
         }
 

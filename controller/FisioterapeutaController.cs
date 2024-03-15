@@ -25,21 +25,21 @@ namespace CriteriosDeProgramacion.controller
         public IActionResult AddFisioterapeuta(Fisioterapeuta fisioterapeuta)
         {
             _IFisioterapeuta.AddFisioterapeuta(fisioterapeuta);
-            return Ok();
+            return Ok(fisioterapeuta);
         }
 
         [HttpPut]
         public IActionResult UpdateFisioterapeuta(Fisioterapeuta fisioterapeuta)
         {
             _IFisioterapeuta.UpdateFisioterapeuta(fisioterapeuta);
-            return Ok();
+            return Ok("Fisioterapeuta actualizado correctamente");
         }
 
         [HttpDelete("{id}")]
         public IActionResult DeleteFisioterapeuta(int id)
         {
             _IFisioterapeuta.DeleteFisioterapeuta(id);
-            return Ok();
+            return Ok("Fisioterapeuta eliminado correctamente");
         }
 
     }

@@ -15,16 +15,16 @@ namespace CriteriosDeProgramacion.controller
             _schedRepository = schedRepository;
         }
 
-        [HttpPost]
-        public void AddSched(Sched sched)
-        {
-            _schedRepository.AddSched(sched);
-        }
-
         [HttpGet]
         public List<Sched> GetSched()
         {
             return _schedRepository.GetSched();
+        }
+
+        [HttpPost]
+        public void AddSched(Sched sched)
+        {
+            _schedRepository.AddSched(sched);
         }
 
         [HttpPut]

@@ -1,6 +1,7 @@
 using Infrastructure.contexto;
 using CriteriosDominio.Dominio.Modelos.Entidades;
 using Infrastructure.src.interfaces;
+using CriteriosDominio.Dominio.Helpers;
 
 namespace Infrastructure.src.repository
 {
@@ -28,27 +29,14 @@ namespace Infrastructure.src.repository
                         context.Rooms.Add(new Rooms
                         {
                             RoomId = i,
-                            Nombre = "MANO ",
+                            Nombre = "MANO + " + i,
                             ZonaId = 2,
-                            ColumnOrder = i
+                            ColumnOrder = i - 1
                         });
                     }
 
                     context.SaveChanges();
                 }
-            }
-        }
-
-        public void AddRooms(Rooms rooms)
-        {
-            using (var context = new AppDbContext())
-            {
-                int lasId = context.Rooms.Max(x => x.RoomId) + 1;
-                int lastColumnOrd = context.Rooms.Max(x => x.ColumnOrder) + 1;
-                rooms.RoomId = lasId;
-                rooms.ColumnOrder = lastColumnOrd;
-                context.Rooms.Add(rooms);
-                context.SaveChanges();
             }
         }
 
@@ -60,10 +48,25 @@ namespace Infrastructure.src.repository
             }
         }
 
+        public void AddRooms(Rooms rooms)
+        {
+            using (var context = new AppDbContext())
+            {
+                ValidationHelper.ValidateEntity(rooms);
+                int lasId = context.Rooms.Max(x => x.RoomId) + 1;
+                int lastColumnOrd = context.Rooms.Max(x => x.ColumnOrder) + 1;
+                rooms.RoomId = lasId;
+                rooms.ColumnOrder = lastColumnOrd;
+                context.Rooms.Add(rooms);
+                context.SaveChanges();
+            }
+        }
+
         public void UpdateRooms(Rooms rooms)
         {
             using (var context = new AppDbContext())
             {
+                rooms.ValidarRoom(rooms);
                 context.Rooms.Update(rooms);
                 context.SaveChanges();
             }

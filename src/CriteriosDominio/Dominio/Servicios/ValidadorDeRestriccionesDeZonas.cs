@@ -32,7 +32,6 @@ namespace CriteriosDominio.Dominio.Servicios
 
             var room = _roomsRepository.GetRooms();
             var sched = _schedRepository.GetSched();
-
             var currentePositionRoom = room.Find(x => x.RoomId == request.roomId)!.ColumnOrder;
             var ultimaPosicion = sched.Find(x => x.FisioterapeutaId == request.fisioterapeutaId)!.RoomId;
             var lastPositionRoom = room.Find(x => x.RoomId == ultimaPosicion)!.ColumnOrder;
