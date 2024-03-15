@@ -4,8 +4,9 @@ namespace Infrastructure.src.interfaces
 {
     public interface IRoomsRepository
     {
-        void AddRooms(Rooms rooms);
+        Rooms GetRoomsById(int id);
         List<Rooms> GetRooms();
+        void AddRooms(Rooms rooms);
 
         void UpdateRooms(Rooms rooms);
 

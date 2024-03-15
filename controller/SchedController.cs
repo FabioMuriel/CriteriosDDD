@@ -6,7 +6,7 @@ namespace CriteriosDeProgramacion.controller
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SchedController
+    public class SchedController : ControllerBase
     {
         private readonly ISchedRepository _schedRepository;
 
@@ -21,6 +21,12 @@ namespace CriteriosDeProgramacion.controller
             return _schedRepository.GetSched();
         }
 
+        [HttpGet("{id}")]
+        public Sched GetSchedById(int id)
+        {
+            return _schedRepository.GetSchedById(id);
+        }
+
         [HttpPost]
         public void AddSched(Sched sched)
         {
@@ -31,12 +37,14 @@ namespace CriteriosDeProgramacion.controller
         public void UpdateSched(Sched sched)
         {
             _schedRepository.UpdateSched(sched);
+            return Ok("Sched actualizado correctamente");
         }
 
         [HttpDelete("{id}")]
         public void DeleteSched(int id)
         {
             _schedRepository.DeleteSched(id);
+            return Ok("Sched eliminado correctamente");
         }
 
     }

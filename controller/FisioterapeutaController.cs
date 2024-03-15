@@ -21,6 +21,12 @@ namespace CriteriosDeProgramacion.controller
             return Ok(_IFisioterapeuta.GetFisioterapeuta());
         }
 
+        [HttpGet("{id}")]
+        public IActionResult GetFisioterapeutaById(int id)
+        {
+            return Ok(_IFisioterapeuta.GetFisioterapeutaById(id));
+        }
+
         [HttpPost]
         public IActionResult AddFisioterapeuta(Fisioterapeuta fisioterapeuta)
         {

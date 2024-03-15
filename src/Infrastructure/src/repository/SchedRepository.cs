@@ -47,6 +47,14 @@ namespace Infrastructure.src.repository
 
         }
 
+        public Sched GetSchedById(int id)
+        {
+            using (var context = new AppDbContext())
+            {
+                return context.Sched.Find(id);
+            }
+        }
+
         public void AddSched(Sched sched)
         {
             using (var context = new AppDbContext())

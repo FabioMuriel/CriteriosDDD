@@ -29,7 +29,7 @@ namespace Infrastructure.src.repository
                         context.Rooms.Add(new Rooms
                         {
                             RoomId = i,
-                            Nombre = "MANO + " + i,
+                            Nombre = "MANO " + i,
                             ZonaId = 2,
                             ColumnOrder = i - 1
                         });
@@ -45,6 +45,14 @@ namespace Infrastructure.src.repository
             using (var context = new AppDbContext())
             {
                 return context.Rooms.ToList();
+            }
+        }
+
+        public Rooms GetRoomsById(int id)
+        {
+            using (var context = new AppDbContext())
+            {
+                return context.Rooms.Find(id);
             }
         }
 

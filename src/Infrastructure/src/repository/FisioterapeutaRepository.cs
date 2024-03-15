@@ -43,6 +43,14 @@ namespace Infrastructure.src.repository
             }
         }
 
+        public Fisioterapeuta GetFisioterapeutaById(int id)
+        {
+            using (var context = new AppDbContext())
+            {
+                return context.Fisioterapeuta.Find(id);
+            }
+        }
+
         public void AddFisioterapeuta(Fisioterapeuta fisioterapeuta)
         {
             using (var context = new AppDbContext())

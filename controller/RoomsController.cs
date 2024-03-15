@@ -21,11 +21,17 @@ namespace CriteriosDeProgramacion.controller
             return Ok(_roomsRepository.GetRooms());
         }
 
+        [HttpGet("{id}")]
+        public IActionResult GetRoomsById(int id)
+        {
+            return Ok(_roomsRepository.GetRoomsById(id));
+        }
+
         [HttpPost]
         public IActionResult AddRooms([FromBody] Rooms rooms)
         {
             _roomsRepository.AddRooms(rooms);
-            return Ok();
+            return Ok(rooms);
         }
 
         [HttpPut]
@@ -39,7 +45,7 @@ namespace CriteriosDeProgramacion.controller
         public IActionResult DeleteRooms(int id)
         {
             _roomsRepository.DeleteRooms(id);
-            return Ok();
+            return Ok("Room eliminado correctamente");
         }
     }
 }
