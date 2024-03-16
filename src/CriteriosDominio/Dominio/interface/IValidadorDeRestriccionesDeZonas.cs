@@ -3,7 +3,7 @@ namespace CriteriosDominio.Dominio.interfaces
     public interface IValidadorDeRestriccionesDeZonas
     {
         IValidadorDeRestriccionesDeZonasResult ValidarRestricciones(IRestriccionesDeZonasRequest request);
-        List<String> ValidateService(IRestriccionesDeZonasRequest request);
+        List<string> ValidateService(IRestriccionesDeZonasRequest request);
 
     }
 

@@ -73,9 +73,9 @@ namespace CriteriosDominio.Dominio.Servicios
             };
         }
 
-        public List<String> ValidateService(IRestriccionesDeZonasRequest request)
+        public List<string> ValidateService(IRestriccionesDeZonasRequest request)
         {
-            List<String> errores = new List<String>();
+            List<string> errores = new List<string>(); ;
 
             if (request is null)
             {
