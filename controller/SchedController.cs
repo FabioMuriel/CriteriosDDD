@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CriteriosDeProgramacion.controller
 {
-    [Route("api/[controller]")]
+    [Route("asterisk/[controller]")]
     [ApiController]
     public class SchedController : ControllerBase
     {
@@ -16,32 +16,33 @@ namespace CriteriosDeProgramacion.controller
         }
 
         [HttpGet]
-        public List<Sched> GetSched()
+        public IActionResult GetSched()
         {
-            return _schedRepository.GetSched();
+            return Ok(_schedRepository.GetSched());
         }
 
         [HttpGet("{id}")]
-        public Sched GetSchedById(int id)
+        public IActionResult GetSchedById(int id)
         {
-            return _schedRepository.GetSchedById(id);
+            return Ok(_schedRepository.GetSchedById(id));
         }
 
         [HttpPost]
-        public void AddSched(Sched sched)
+        public IActionResult AddSched(Sched sched)
         {
             _schedRepository.AddSched(sched);
+            return Ok(sched);
         }
 
         [HttpPut]
-        public void UpdateSched(Sched sched)
+        public IActionResult UpdateSched(Sched sched)
         {
             _schedRepository.UpdateSched(sched);
             return Ok("Sched actualizado correctamente");
         }
 
         [HttpDelete("{id}")]
-        public void DeleteSched(int id)
+        public IActionResult DeleteSched(int id)
         {
             _schedRepository.DeleteSched(id);
             return Ok("Sched eliminado correctamente");

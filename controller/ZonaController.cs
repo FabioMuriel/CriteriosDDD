@@ -19,25 +19,31 @@ namespace CriteriosDeProgramacion.controller
             return Ok(_zonaRepository.GetZonas());
         }
 
+        [HttpGet("{id}")]
+        public IActionResult GetZonaById(int id)
+        {
+            return Ok(_zonaRepository.GetZonaById(id));
+        }
+
         [HttpPost]
         public IActionResult AddZona([FromBody] Zona zona)
         {
             _zonaRepository.AddZona(zona);
-            return Ok();
+            return Ok(zona);
         }
 
         [HttpPut]
         public IActionResult UpdateZona([FromBody] Zona zona)
         {
             _zonaRepository.UpdateZona(zona);
-            return Ok();
+            return Ok("Zona actualizada correctamente");
         }
 
         [HttpDelete("{id}")]
         public IActionResult DeleteZona(int id)
         {
             _zonaRepository.DeleteZona(id);
-            return Ok();
+            return Ok("Zona eliminada correctamente");
         }
     }
 }

@@ -19,12 +19,14 @@ namespace Infrastructure.src.repository
                         new Fisioterapeuta
                         {
                             Nombre = "Juan",
-                            Apellido = "Perez"
+                            Apellido = "Perez",
+                            Rango = 10
                         },
                         new Fisioterapeuta
                         {
                             Nombre = "Pedro",
-                            Apellido = "Gomez"
+                            Apellido = "Gomez",
+                            Rango = 30
                         }
                     };
 
@@ -32,7 +34,6 @@ namespace Infrastructure.src.repository
                     context.SaveChanges();
                 }
             }
-
         }
 
         public List<Fisioterapeuta> GetFisioterapeuta()

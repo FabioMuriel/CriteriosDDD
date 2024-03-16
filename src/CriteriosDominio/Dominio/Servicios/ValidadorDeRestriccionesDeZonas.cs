@@ -9,12 +9,14 @@ namespace CriteriosDominio.Dominio.Servicios
         private readonly IRestriccionesDeZonasRepository _restriccionesDeZonasRepository;
         private readonly IRoomsRepository _roomsRepository;
         private readonly ISchedRepository _schedRepository;
+        private readonly IFisioterapeuta _fisioterapeuta;
 
-        public ValidadorDeRestriccionesDeZonas(IRestriccionesDeZonasRepository restriccionesDeZonasRepository, IRoomsRepository roomsRepository, ISchedRepository schedRepository)
+        public ValidadorDeRestriccionesDeZonas(IRestriccionesDeZonasRepository restriccionesDeZonasRepository, IRoomsRepository roomsRepository, ISchedRepository schedRepository, IFisioterapeuta fisioterapeuta)
         {
             _restriccionesDeZonasRepository = restriccionesDeZonasRepository;
             _roomsRepository = roomsRepository;
             _schedRepository = schedRepository;
+            _fisioterapeuta = fisioterapeuta;
         }
 
         public IValidadorDeRestriccionesDeZonasResult ValidarRestricciones(IRestriccionesDeZonasRequest request)
@@ -30,11 +32,21 @@ namespace CriteriosDominio.Dominio.Servicios
                 };
             }
 
-            var room = _roomsRepository.GetRooms();
+            var fisioterapeuta = _fisioterapeuta.GetFisioterapeutaById(request.fisioterapeutaId);
+            if (fisioterapeuta.Rango == 30)
+            {
+                return new ValidadorDeRestriccionesDeZonasResult
+                {
+                    isValid = true,
+                    mensaje = "Agendamiento valido",
+                    Success = true
+                };
+            }
+
             var sched = _schedRepository.GetSched();
-            var currentePositionRoom = room.Find(x => x.RoomId == request.roomId)!.ColumnOrder;
+            var currentePositionRoom = _roomsRepository.GetRoomsById(request.roomId).ColumnOrder;
             var ultimaPosicion = sched.Find(x => x.FisioterapeutaId == request.fisioterapeutaId)!.RoomId;
-            var lastPositionRoom = room.Find(x => x.RoomId == ultimaPosicion)!.ColumnOrder;
+            var lastPositionRoom = _roomsRepository.GetRoomsById(ultimaPosicion).ColumnOrder;
             var restricciones = _restriccionesDeZonasRepository.GetRestriccionesDeZonas();
             bool isValidAgendamiento = false;
             string mensaje = string.Empty;

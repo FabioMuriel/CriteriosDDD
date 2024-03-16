@@ -38,7 +38,7 @@ namespace CriteriosDeProgramacion.controller
         public IActionResult UpdateRooms([FromBody] Rooms rooms)
         {
             _roomsRepository.UpdateRooms(rooms);
-            return Ok();
+            return Ok("Room actualizado correctamente");
         }
 
         [HttpDelete("{id}")]

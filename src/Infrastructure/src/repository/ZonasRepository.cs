@@ -41,6 +41,14 @@ namespace Infrastructure.src.repository
             }
         }
 
+        public Zona GetZonaById(int id)
+        {
+            using (var context = new AppDbContext())
+            {
+                return context.Zonas.Find(id);
+            }
+        }
+
         public void AddZona(Zona zona)
         {
             using (var context = new AppDbContext())
