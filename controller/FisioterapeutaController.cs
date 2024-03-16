@@ -1,5 +1,5 @@
 using CriteriosDominio.Dominio.Modelos.Entidades;
-using Infrastructure.src.interfaces;
+using CriteriosDominio.Dominio.interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CriteriosDeProgramacion.controller
@@ -44,8 +44,16 @@ namespace CriteriosDeProgramacion.controller
         [HttpDelete("{id}")]
         public IActionResult DeleteFisioterapeuta(int id)
         {
-            _IFisioterapeuta.DeleteFisioterapeuta(id);
-            return Ok("Fisioterapeuta eliminado correctamente");
+
+            if (_IFisioterapeuta.GetFisioterapeutaById(id) == null)
+            {
+                return BadRequest("No se encontro el fisioterapeuta");
+            }
+            else
+            {
+                _IFisioterapeuta.DeleteFisioterapeuta(id);
+                return Ok("Fisioterapeuta eliminado correctamente");
+            }
         }
 
     }

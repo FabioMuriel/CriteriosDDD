@@ -1,6 +1,6 @@
 using Infrastructure.contexto;
 using CriteriosDominio.Dominio.Modelos.Entidades;
-using Infrastructure.src.interfaces;
+using CriteriosDominio.Dominio.interfaces;
 using CriteriosDominio.Dominio.Helpers;
 
 namespace Infrastructure.src.repository

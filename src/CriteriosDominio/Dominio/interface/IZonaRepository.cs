@@ -1,7 +1,7 @@
 
 using CriteriosDominio.Dominio.Modelos.Entidades;
 
-namespace Infrastructure.src.interfaces
+namespace CriteriosDominio.Dominio.interfaces
 {
     public interface IZonaRepository
     {

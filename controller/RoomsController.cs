@@ -1,5 +1,5 @@
 using CriteriosDominio.Dominio.Modelos.Entidades;
-using Infrastructure.src.interfaces;
+using CriteriosDominio.Dominio.interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CriteriosDeProgramacion.controller
@@ -44,8 +44,15 @@ namespace CriteriosDeProgramacion.controller
         [HttpDelete("{id}")]
         public IActionResult DeleteRooms(int id)
         {
-            _roomsRepository.DeleteRooms(id);
-            return Ok("Room eliminado correctamente");
+            if (_roomsRepository.GetRoomsById(id) == null)
+            {
+                return BadRequest("No se encontro el room");
+            }
+            else
+            {
+                _roomsRepository.DeleteRooms(id);
+                return Ok("Room eliminado correctamente");
+            }
         }
     }
 }

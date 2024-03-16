@@ -1,5 +1,5 @@
 using CriteriosDominio.Dominio.Modelos.Entidades;
-using Infrastructure.src.interfaces;
+using CriteriosDominio.Dominio.interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CriteriosDeProgramacion.controller
@@ -42,8 +42,15 @@ namespace CriteriosDeProgramacion.controller
         [HttpDelete("{id}")]
         public IActionResult DeleteZona(int id)
         {
-            _zonaRepository.DeleteZona(id);
-            return Ok("Zona eliminada correctamente");
+            if (_zonaRepository.GetZonaById(id) == null)
+            {
+                return BadRequest("No se encontro la zona");
+            }
+            else
+            {
+                _zonaRepository.DeleteZona(id);
+                return Ok("Zona eliminada correctamente");
+            }
         }
     }
 }

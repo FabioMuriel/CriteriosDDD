@@ -1,6 +1,5 @@
 using CriteriosDominio.Dominio.interfaces;
 using CriteriosDominio.Dominio.Servicios;
-using Infrastructure.src.interfaces;
 using Infrastructure.src.repository;
 
 public class Program

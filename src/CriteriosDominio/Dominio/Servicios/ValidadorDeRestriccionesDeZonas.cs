@@ -1,6 +1,5 @@
 using CriteriosDominio.Dominio.interfaces;
 using CriteriosDominio.Dominio.Modelos.Entidades;
-using Infrastructure.src.interfaces;
 
 namespace CriteriosDominio.Dominio.Servicios
 {
