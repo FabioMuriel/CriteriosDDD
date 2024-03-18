@@ -1,7 +1,6 @@
 using Infrastructure.contexto;
 using CriteriosDominio.Dominio.Modelos.Entidades;
 using CriteriosDominio.Dominio.interfaces;
-using CriteriosDominio.Dominio.Servicios;
 using CriteriosDominio.Dominio.Helpers;
 
 namespace Infrastructure.src.repository
@@ -51,7 +50,7 @@ namespace Infrastructure.src.repository
         {
             using (var context = new AppDbContext())
             {
-                return context.Sched.Find(id);
+                return context.Sched.Find(id)!;
             }
         }
 

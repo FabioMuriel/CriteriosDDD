@@ -19,7 +19,7 @@ namespace CriteriosDominio.Dominio.Helpers
                 if (property.PropertyType == typeof(int))
                 {
                     var value = property.GetValue(entity);
-                    if ((int)value <= 0)
+                    if ((int)value! <= 0)
                     {
                         throw new Exception($"El campo {property.Name} no puede ser menor o igual a 0");
                     }

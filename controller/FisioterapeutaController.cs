@@ -24,7 +24,14 @@ namespace CriteriosDeProgramacion.controller
         [HttpGet("{id}")]
         public IActionResult GetFisioterapeutaById(int id)
         {
-            return Ok(_IFisioterapeuta.GetFisioterapeutaById(id));
+            if (_IFisioterapeuta.GetFisioterapeutaById(id) == null)
+            {
+                return BadRequest("No se encontro el fisioterapeuta");
+            }
+            else
+            {
+                return Ok(_IFisioterapeuta.GetFisioterapeutaById(id));
+            }
         }
 
         [HttpPost]

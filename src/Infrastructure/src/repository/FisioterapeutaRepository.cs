@@ -48,7 +48,7 @@ namespace Infrastructure.src.repository
         {
             using (var context = new AppDbContext())
             {
-                return context.Fisioterapeuta.Find(id);
+                return context.Fisioterapeuta.Find(id)!;
             }
         }
 
@@ -77,7 +77,7 @@ namespace Infrastructure.src.repository
             using (var context = new AppDbContext())
             {
                 var fisioterapeuta = context.Fisioterapeuta.Find(id);
-                context.Fisioterapeuta.Remove(fisioterapeuta);
+                context.Fisioterapeuta.Remove(fisioterapeuta!);
                 context.SaveChanges();
             }
         }

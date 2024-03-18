@@ -52,7 +52,7 @@ namespace Infrastructure.src.repository
         {
             using (var context = new AppDbContext())
             {
-                return context.Rooms.Find(id);
+                return context.Rooms.Find(id)!;
             }
         }
 
@@ -85,7 +85,7 @@ namespace Infrastructure.src.repository
             using (var context = new AppDbContext())
             {
                 var room = context.Rooms.Find(id);
-                context.Rooms.Remove(room);
+                context.Rooms.Remove(room!);
                 context.SaveChanges();
             }
         }

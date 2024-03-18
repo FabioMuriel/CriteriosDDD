@@ -24,7 +24,15 @@ namespace CriteriosDeProgramacion.controller
         [HttpGet("{id}")]
         public IActionResult GetRoomsById(int id)
         {
-            return Ok(_roomsRepository.GetRoomsById(id));
+            if (_roomsRepository.GetRoomsById(id) == null)
+            {
+                return BadRequest("No se encontro el room");
+            }
+            else
+            {
+                _roomsRepository.GetRoomsById(id);
+                return Ok(_roomsRepository.GetRoomsById(id));
+            }
         }
 
         [HttpPost]

@@ -24,7 +24,14 @@ namespace CriteriosDeProgramacion.controller
         [HttpGet("{id}")]
         public IActionResult GetSchedById(int id)
         {
-            return Ok(_schedRepository.GetSchedById(id));
+            if (_schedRepository.GetSchedById(id) == null)
+            {
+                return BadRequest("No se encontro el sched");
+            }
+            else
+            {
+                return Ok(_schedRepository.GetSchedById(id));
+            }
         }
 
         [HttpPost]

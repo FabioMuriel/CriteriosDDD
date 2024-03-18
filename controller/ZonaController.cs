@@ -22,7 +22,14 @@ namespace CriteriosDeProgramacion.controller
         [HttpGet("{id}")]
         public IActionResult GetZonaById(int id)
         {
-            return Ok(_zonaRepository.GetZonaById(id));
+            if (_zonaRepository.GetZonaById(id) == null)
+            {
+                return BadRequest("No se encontro la zona");
+            }
+            else
+            {
+                return Ok(_zonaRepository.GetZonaById(id));
+            }
         }
 
         [HttpPost]

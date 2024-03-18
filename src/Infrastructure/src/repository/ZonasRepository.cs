@@ -45,7 +45,7 @@ namespace Infrastructure.src.repository
         {
             using (var context = new AppDbContext())
             {
-                return context.Zonas.Find(id);
+                return context.Zonas.Find(id)!;
             }
         }
 
@@ -76,7 +76,7 @@ namespace Infrastructure.src.repository
             using (var context = new AppDbContext())
             {
                 var zona = context.Zonas.Find(id);
-                context.Zonas.Remove(zona);
+                context.Zonas.Remove(zona!);
                 context.SaveChanges();
             }
         }
