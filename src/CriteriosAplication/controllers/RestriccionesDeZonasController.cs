@@ -2,7 +2,7 @@ using CriteriosDominio.Dominio.Modelos.Entidades;
 using CriteriosDominio.Dominio.interfaces;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CriteriosDeProgramacion.controller
+namespace CriteriosDeProgramacion.Aplicacion.controller
 {
 
     [Route("asterisk/[controller]")]

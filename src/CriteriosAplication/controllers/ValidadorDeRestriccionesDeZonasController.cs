@@ -2,7 +2,7 @@ using CriteriosDominio.Dominio.interfaces;
 using CriteriosDominio.Dominio.Servicios;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CriteriosDeProgramacion.controller
+namespace CriteriosDeProgramacion.Aplicacion.controller
 {
     [ApiController]
     [Route("services/[controller]")]
