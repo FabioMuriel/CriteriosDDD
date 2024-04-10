@@ -1,7 +1,8 @@
 using CriteriosDominio.Dominio.interfaces;
 using CriteriosDominio.Dominio.Modelos.Entidades;
 
-namespace CriteriosAplicaion.Services{
+namespace CriteriosAplicaion.Services
+{
 
     public class RoomsService : IRoomsService
     {

@@ -22,6 +22,7 @@ namespace Infrastructure.src.repository
             await _context.SaveChangesAsync();
         }
 
+        //TODO: Implementar el metodo DeleteSched
         public async Task DeleteSched(Guid id)
         {
             var sched = await _context.Sched.FindAsync(id);

@@ -8,9 +8,9 @@ namespace CriteriosDeProgramacion.Aplicacion.controller
     [ApiController]
     public class SchedController : ControllerBase
     {
-        private readonly ISchedRepository _schedRepository;
+        private readonly ISchedService _schedRepository;
 
-        public SchedController(ISchedRepository schedRepository)
+        public SchedController(ISchedService schedRepository)
         {
             _schedRepository = schedRepository;
         }
@@ -22,7 +22,7 @@ namespace CriteriosDeProgramacion.Aplicacion.controller
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetSchedById(int id)
+        public IActionResult GetSchedById(Guid id)
         {
             if (_schedRepository.GetSchedById(id) == null)
             {
@@ -49,7 +49,7 @@ namespace CriteriosDeProgramacion.Aplicacion.controller
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteSched(int id)
+        public IActionResult DeleteSched(Guid id)
         {
 
             if (_schedRepository.GetSchedById(id) == null)
