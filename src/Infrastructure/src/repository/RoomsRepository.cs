@@ -2,93 +2,109 @@ using Infrastructure.contexto;
 using CriteriosDominio.Dominio.Modelos.Entidades;
 using CriteriosDominio.Dominio.interfaces;
 using CriteriosDominio.Dominio.Helpers;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.src.repository
 {
     public class RoomsRepository : IRoomsRepository
     {
-        public RoomsRepository()
+
+        private readonly AppDbContext _context;
+        public RoomsRepository(AppDbContext context)
         {
-            using (var context = new AppDbContext())
-            {
-                if (!context.Rooms.Any())
-                {
-                    for (int i = 0; i < 11; i++)
-                    {
-                        context.Rooms.Add(new Rooms
-                        {
-                            RoomId = i + 1,
-                            Nombre = "CAMILLA " + i,
-                            ZonaId = 1,
-                            ColumnOrder = i
-                        });
-                    }
+            _context = context;
+            // using (var context = new AppDbContext())
+            // {
+            //     if (!context.Rooms.Any())
+            //     {
+            //         for (int i = 0; i < 11; i++)
+            //         {
+            //             context.Rooms.Add(new Rooms
+            //             {
+            //                 RoomId = i + 1,
+            //                 Nombre = "CAMILLA " + i,
+            //                 ZonaId = 1,
+            //                 ColumnOrder = i
+            //             });
+            //         }
 
-                    for (int i = 12; i < 19; i++)
-                    {
-                        context.Rooms.Add(new Rooms
-                        {
-                            RoomId = i,
-                            Nombre = "MANO " + i,
-                            ZonaId = 2,
-                            ColumnOrder = i - 1
-                        });
-                    }
+            //         for (int i = 12; i < 19; i++)
+            //         {
+            //             context.Rooms.Add(new Rooms
+            //             {
+            //                 RoomId = i,
+            //                 Nombre = "MANO " + i,
+            //                 ZonaId = 2,
+            //                 ColumnOrder = i - 1
+            //             });
+            //         }
 
-                    context.SaveChanges();
-                }
-            }
+            //         context.SaveChanges();
+            //     }
+            // }
         }
 
-        public List<Rooms> GetRooms()
+        public async Task AddRooms(Rooms rooms)
         {
-            using (var context = new AppDbContext())
-            {
-                return context.Rooms.ToList();
-            }
+
+            ValidationHelper.ValidateEntity(rooms);
+
+            await _context.Rooms.AddAsync(rooms);
+            await _context.SaveChangesAsync();
         }
 
-        public Rooms GetRoomsById(int id)
+        public async Task<IEnumerable<Rooms>> GetRooms()
         {
-            using (var context = new AppDbContext())
+ 
+            var rooms = await _context.Rooms.ToListAsync();
+
+            if (rooms == null)
             {
-                return context.Rooms.Find(id)!;
+                throw new ArgumentNullException(nameof(rooms));
             }
+
+            return rooms;
         }
 
-        public void AddRooms(Rooms rooms)
+
+        public async Task DeleteRooms(Guid id)
         {
-            using (var context = new AppDbContext())
+            Rooms? rooms = await _context.Rooms.FindAsync(id);
+            if (rooms == null)
             {
-                ValidationHelper.ValidateEntity(rooms);
-                int lasId = context.Rooms.Max(x => x.RoomId) + 1;
-                int lastColumnOrd = context.Rooms.Max(x => x.ColumnOrder) + 1;
-                rooms.RoomId = lasId;
-                rooms.ColumnOrder = lastColumnOrd;
-                context.Rooms.Add(rooms);
-                context.SaveChanges();
+                throw new ArgumentNullException(nameof(rooms));
             }
+
+            _context.Rooms.Remove(rooms);
+            await _context.SaveChangesAsync();
         }
 
-        public void UpdateRooms(Rooms rooms)
+        public async Task<Rooms?> GetRoomsById(Guid id)
         {
-            using (var context = new AppDbContext())
+            var rooms = await _context.Rooms.FindAsync(id);
+
+            if (rooms == null)
             {
-                ValidationHelper.ValidateEntity(rooms);
-                context.Rooms.Update(rooms);
-                context.SaveChanges();
+                throw new ArgumentNullException(nameof(rooms));
             }
+
+            return rooms;
         }
 
-        public void DeleteRooms(int id)
+        public async Task UpdateRooms(Rooms rooms)
         {
-            using (var context = new AppDbContext())
-            {
-                var room = context.Rooms.Find(id);
-                context.Rooms.Remove(room!);
-                context.SaveChanges();
-            }
-        }
+            var roomsToUpdate = await _context.Rooms.FindAsync(rooms.RoomId);
 
+            if (roomsToUpdate == null)
+            {
+                throw new ArgumentNullException(nameof(roomsToUpdate));
+            }
+
+            roomsToUpdate.SetNombre(rooms.Nombre);
+            roomsToUpdate.SetZonaId(rooms.ZonaId);
+            roomsToUpdate.SetColumnOrder(rooms.ColumnOrder);
+
+            await _context.SaveChangesAsync();
+        }
     }
 }

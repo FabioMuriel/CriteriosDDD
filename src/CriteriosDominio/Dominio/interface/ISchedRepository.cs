@@ -4,10 +4,10 @@ namespace CriteriosDominio.Dominio.interfaces
 {
     public interface ISchedRepository
     {
-        List<Sched> GetSched();
-        Sched GetSchedById(int id);
-        void AddSched(Sched sched);
-        void UpdateSched(Sched sched);
-        void DeleteSched(int id);
+        Task<IEnumerable<Sched>> GetSched();
+        Task<Sched> GetSchedById(Guid id);
+        Task AddSched(Sched sched);
+        Task UpdateSched(Sched sched);
+        Task DeleteSched(Guid id);
     }
 }

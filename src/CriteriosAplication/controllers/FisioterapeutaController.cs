@@ -8,9 +8,9 @@ namespace CriteriosDeProgramacion.Aplicacion.controller
     [ApiController]
     public class FisioterapeutaController : ControllerBase
     {
-        readonly IFisioterapeuta _IFisioterapeuta;
+        readonly IFisioterapeutaService _IFisioterapeuta;
 
-        public FisioterapeutaController(IFisioterapeuta IFisioterapeuta)
+        public FisioterapeutaController(IFisioterapeutaService IFisioterapeuta)
         {
             _IFisioterapeuta = IFisioterapeuta;
         }
@@ -22,15 +22,16 @@ namespace CriteriosDeProgramacion.Aplicacion.controller
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetFisioterapeutaById(int id)
+        public IActionResult GetFisioterapeutaById(Guid id)
         {
-            if (_IFisioterapeuta.GetFisioterapeutaById(id) == null)
+            var fisioterapeuta = _IFisioterapeuta.GetFisioterapeutaById(id);
+            if (fisioterapeuta == null)
             {
-                return BadRequest("No se encontro el fisioterapeuta");
+                return BadRequest("No se encontró el fisioterapeuta");
             }
             else
             {
-                return Ok(_IFisioterapeuta.GetFisioterapeutaById(id));
+                return Ok(fisioterapeuta);
             }
         }
 
@@ -44,12 +45,12 @@ namespace CriteriosDeProgramacion.Aplicacion.controller
         [HttpPut]
         public IActionResult UpdateFisioterapeuta(Fisioterapeuta fisioterapeuta)
         {
-            _IFisioterapeuta.UpdateFisioterapeuta(fisioterapeuta);
+        _IFisioterapeuta.UpdateFisioterapeuta(fisioterapeuta);
             return Ok("Fisioterapeuta actualizado correctamente");
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteFisioterapeuta(int id)
+        public IActionResult DeleteFisioterapeuta(Guid id)
         {
 
             if (_IFisioterapeuta.GetFisioterapeutaById(id) == null)

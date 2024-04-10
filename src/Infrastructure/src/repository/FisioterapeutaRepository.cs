@@ -2,84 +2,78 @@ using Infrastructure.contexto;
 using CriteriosDominio.Dominio.Modelos.Entidades;
 using CriteriosDominio.Dominio.interfaces;
 using CriteriosDominio.Dominio.Helpers;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.src.repository
 {
-    public class FisioterapeutaRepository : IFisioterapeuta
+    public class FisioterapeutaRepository : IFisioterapeutaRepository
     {
+        private readonly AppDbContext _context;
 
-        public FisioterapeutaRepository()
+        public FisioterapeutaRepository(AppDbContext context)
         {
-
-            using (var context = new AppDbContext())
-            {
-                if (!context.Fisioterapeuta.Any())
-                {
-                    var fisioterapeutas = new List<Fisioterapeuta> {
-                        new Fisioterapeuta
-                        {
-                            Nombre = "Juan",
-                            Apellido = "Perez",
-                            Rango = 10
-                        },
-                        new Fisioterapeuta
-                        {
-                            Nombre = "Pedro",
-                            Apellido = "Gomez",
-                            Rango = 30
-                        }
-                    };
-
-                    context.AddRange(fisioterapeutas);
-                    context.SaveChanges();
-                }
-            }
+            _context = context;
         }
 
-        public List<Fisioterapeuta> GetFisioterapeuta()
+        public async Task AddFisioterapeuta(Fisioterapeuta fisioterapeuta)
         {
-            using (var context = new AppDbContext())
-            {
-                return context.Fisioterapeuta.ToList();
-            }
+            ValidationHelper.ValidateEntity(fisioterapeuta);
+
+            await _context.Fisioterapeuta.AddAsync(fisioterapeuta);
+            await _context.SaveChangesAsync();
         }
 
-        public Fisioterapeuta GetFisioterapeutaById(int id)
+        public async Task DeleteFisioterapeuta(Guid id)
         {
-            using (var context = new AppDbContext())
+            var fisioterapeuta = await _context.Fisioterapeuta.FindAsync(id);
+
+            if(fisioterapeuta == null)
             {
-                return context.Fisioterapeuta.Find(id)!;
+                throw new ArgumentException("El fisioterapeuta no existe");
             }
+
+            _context.Fisioterapeuta.Remove(fisioterapeuta);
+            await _context.SaveChangesAsync();
         }
 
-        public void AddFisioterapeuta(Fisioterapeuta fisioterapeuta)
+        public async Task<IEnumerable<Fisioterapeuta>> GetFisioterapeuta()
         {
-            using (var context = new AppDbContext())
+            var fisioterapeutas = await _context.Fisioterapeuta.ToListAsync();
+
+            if(fisioterapeutas == null)
             {
-                ValidationHelper.ValidateEntity(fisioterapeuta);
-                context.Add(fisioterapeuta);
-                context.SaveChanges();
+                throw new ArgumentException("No hay fisioterapeutas registrados");
             }
+
+            return fisioterapeutas;
         }
 
-        public void UpdateFisioterapeuta(Fisioterapeuta fisioterapeuta)
+        public async Task<Fisioterapeuta?> GetFisioterapeutaById(Guid id)
         {
-            using (var context = new AppDbContext())
+            var fisioterapeuta = await _context.Fisioterapeuta.FindAsync(id);
+
+            if(fisioterapeuta == null)
             {
-                ValidationHelper.ValidateEntity(fisioterapeuta);
-                context.Update(fisioterapeuta);
-                context.SaveChanges();
+                throw new ArgumentException("El fisioterapeuta no existe");
             }
+
+            return fisioterapeuta;
         }
 
-        public void DeleteFisioterapeuta(int id)
+        public async Task UpdateFisioterapeuta(Fisioterapeuta fisioterapeuta)
         {
-            using (var context = new AppDbContext())
+            var fisioterapeutaToUpdate = await _context.Fisioterapeuta.FindAsync(fisioterapeuta.FisioterapeutaId);
+
+            if(fisioterapeutaToUpdate == null)
             {
-                var fisioterapeuta = context.Fisioterapeuta.Find(id);
-                context.Fisioterapeuta.Remove(fisioterapeuta!);
-                context.SaveChanges();
+                throw new ArgumentException("El fisioterapeuta no existe");
             }
+
+            fisioterapeutaToUpdate.SetNombre(fisioterapeuta.Nombre);
+            fisioterapeutaToUpdate.SetApellido(fisioterapeuta.Apellido);
+            fisioterapeutaToUpdate.SetRango(fisioterapeuta.Rango);
+
+            await _context.SaveChangesAsync();
         }
     }
 }

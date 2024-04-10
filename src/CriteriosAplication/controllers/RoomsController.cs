@@ -9,8 +9,8 @@ namespace CriteriosDeProgramacion.Aplicacion.controller
 
     public class RoomsController : ControllerBase
     {
-        readonly IRoomsRepository _roomsRepository;
-        public RoomsController(IRoomsRepository roomsRepository)
+        readonly IRoomsService _roomsRepository;
+        public RoomsController(IRoomsService roomsRepository)
         {
             _roomsRepository = roomsRepository;
         }
@@ -22,7 +22,7 @@ namespace CriteriosDeProgramacion.Aplicacion.controller
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetRoomsById(int id)
+        public IActionResult GetRoomsById(Guid id)
         {
             if (_roomsRepository.GetRoomsById(id) == null)
             {
@@ -50,7 +50,7 @@ namespace CriteriosDeProgramacion.Aplicacion.controller
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteRooms(int id)
+        public IActionResult DeleteRooms(Guid id)
         {
             if (_roomsRepository.GetRoomsById(id) == null)
             {

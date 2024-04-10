@@ -5,11 +5,11 @@ namespace CriteriosDominio.Dominio.interfaces
 {
     public interface IZonaRepository
     {
-        List<Zona> GetZonas();
-        Zona GetZonaById(int id);
-        void AddZona(Zona zona);
-        void UpdateZona(Zona zona);
-        void DeleteZona(int id);
+        Task<IEnumerable<Zona>> GetZonas();
+        Task<Zona?> GetZonaById(int id);
+        Task AddZona(Zona zona);
+        Task UpdateZona(Zona zona);
+        Task DeleteZona(int id);
 
     }
 }

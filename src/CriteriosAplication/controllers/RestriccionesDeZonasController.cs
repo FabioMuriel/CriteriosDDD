@@ -9,9 +9,9 @@ namespace CriteriosDeProgramacion.Aplicacion.controller
     [ApiController]
     public class RestriccionesDeZonasController : ControllerBase
     {
-        readonly IRestriccionesDeZonasRepository _restriccionesDeZonasRepository;
+        readonly IRestriccionesDeZonasService _restriccionesDeZonasRepository;
 
-        public RestriccionesDeZonasController(IRestriccionesDeZonasRepository restriccionesDeZonasRepository)
+        public RestriccionesDeZonasController(IRestriccionesDeZonasService restriccionesDeZonasRepository)
         {
             _restriccionesDeZonasRepository = restriccionesDeZonasRepository;
         }

@@ -2,92 +2,60 @@ using Infrastructure.contexto;
 using CriteriosDominio.Dominio.Modelos.Entidades;
 using CriteriosDominio.Dominio.interfaces;
 using CriteriosDominio.Dominio.Helpers;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.src.repository
 {
     public class SchedRepository : ISchedRepository
     {
-        public SchedRepository()
+        private readonly AppDbContext _context;
+
+        public SchedRepository(AppDbContext context)
         {
-            using (var context = new AppDbContext())
-            {
-                if (!context.Sched.Any())
-                {
-
-                    var scheds = new List<Sched> {
-                        new Sched
-                        {
-                            Fecha = DateTime.Now,
-                            FisioterapeutaId = 1,
-                            RoomId = 1,
-                            Hora = 9
-                        },
-                        new Sched
-                        {
-                            Fecha = DateTime.Now,
-                            FisioterapeutaId = 2,
-                            RoomId = 2,
-                            Hora = 10
-                        }
-                    };
-
-                    context.AddRange(scheds);
-                    context.SaveChanges();
-                }
-            }
+            _context = context;
         }
 
-        public List<Sched> GetSched()
+        public async Task AddSched(Sched sched)
         {
-            using (var context = new AppDbContext())
-            {
-                return context.Sched.ToList();
-            }
-
+            ValidationHelper.ValidateEntity(sched);
+            await _context.Sched.AddAsync(sched);
+            await _context.SaveChangesAsync();
         }
 
-        public Sched GetSchedById(int id)
+        public async Task DeleteSched(Guid id)
         {
-            using (var context = new AppDbContext())
+            var sched = await _context.Sched.FindAsync(id);
+            if (sched == null)
             {
-                return context.Sched.Find(id)!;
+                throw new Exception("Sched not found");
             }
+
+            _context.Sched.Remove(sched);
+            await _context.SaveChangesAsync();
         }
 
-        public void AddSched(Sched sched)
+        public async Task<IEnumerable<Sched>> GetSched()
         {
-            using (var context = new AppDbContext())
-            {
-                ValidationHelper.ValidateEntity(sched);
-                int lasId = context.Sched.Max(x => x.SchedId) + 1;
-                sched.SchedId = lasId;
-                context.Sched.Add(sched);
-                context.SaveChanges();
-            }
+            return await _context.Sched.ToListAsync();   
         }
 
-        public void UpdateSched(Sched sched)
+        public async Task<Sched> GetSchedById(Guid id)
         {
-            using (var context = new AppDbContext())
+            Sched? sched = await _context.Sched.FindAsync(id);
+
+            if (sched == null)
             {
-                ValidationHelper.ValidateEntity(sched);
-                context.Sched.Update(sched);
-                context.SaveChanges();
+                throw new Exception("Sched not found");
             }
+
+            return sched;
         }
 
-        public void DeleteSched(int id)
+        public async Task UpdateSched(Sched sched)
         {
-            using (var context = new AppDbContext())
-            {
-                var sched = context.Sched.FirstOrDefault(x => x.SchedId == id);
-                if (sched != null)
-                {
-                    context.Sched.Remove(sched);
-                    context.SaveChanges();
-                }
-            }
+            ValidationHelper.ValidateEntity(sched);
+            _context.Sched.Update(sched);
+            await _context.SaveChangesAsync();
         }
-
     }
 }

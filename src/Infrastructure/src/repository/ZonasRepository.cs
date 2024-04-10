@@ -7,78 +7,58 @@ namespace Infrastructure.src.repository
 {
     public class ZonasRepository : IZonaRepository
     {
+
+        private readonly AppDbContext _context;
+
         public ZonasRepository()
         {
-            using (var context = new AppDbContext())
-            {
-                if (!context.Zonas.Any())
-                {
-                    var zonas = new List<Zona>
-                {
-                    new Zona
-                    {
-                        Nombre = "CAMILLA",
-                        Rooms = "1-1-1-1-1-1-1-1-1-1-0-0-0-0-0-0-0-0",
-                    },
-                    new Zona
-                    {
-                        Nombre = "CAMILLA",
-                        Rooms = "0-0-0-0-0-0-0-0-0-0-1-1-1-1-1-1-1-1"
-                    }
-                };
+            // using (var context = new AppDbContext())
+            // {
+            //     if (!context.Zonas.Any())
+            //     {
+            //         var zonas = new List<Zona>
+            //     {
+            //         new Zona
+            //         {
+            //             Nombre = "CAMILLA",
+            //             Rooms = "1-1-1-1-1-1-1-1-1-1-0-0-0-0-0-0-0-0",
+            //         },
+            //         new Zona
+            //         {
+            //             Nombre = "CAMILLA",
+            //             Rooms = "0-0-0-0-0-0-0-0-0-0-1-1-1-1-1-1-1-1"
+            //         }
+            //     };
 
-                    context.Zonas.AddRange(zonas);
-                    context.SaveChanges();
-                }
-            }
+            //         context.Zonas.AddRange(zonas);
+            //         context.SaveChanges();
+            //     }
+            // }
         }
 
-        public List<Zona> GetZonas()
+        public Task AddZona(Zona zona)
         {
-            using (var context = new AppDbContext())
-            {
-                return context.Zonas.ToList();
-            }
+            throw new NotImplementedException();
         }
 
-        public Zona GetZonaById(int id)
+        public Task DeleteZona(int id)
         {
-            using (var context = new AppDbContext())
-            {
-                return context.Zonas.Find(id)!;
-            }
+            throw new NotImplementedException();
         }
 
-        public void AddZona(Zona zona)
+        public Task<Zona?> GetZonaById(int id)
         {
-            using (var context = new AppDbContext())
-            {
-                ValidationHelper.ValidateEntity(zona);
-                int lasId = context.Zonas.Max(x => x.ZonaId) + 1;
-                zona.ZonaId = lasId;
-                context.Zonas.Add(zona);
-                context.SaveChanges();
-            }
+            throw new NotImplementedException();
         }
 
-        public void UpdateZona(Zona zona)
+        public Task<IEnumerable<Zona>> GetZonas()
         {
-            using (var context = new AppDbContext())
-            {
-                ValidationHelper.ValidateEntity(zona);
-                context.Zonas.Update(zona);
-                context.SaveChanges();
-            }
+            throw new NotImplementedException();
         }
 
-        public void DeleteZona(int id)
+        public Task UpdateZona(Zona zona)
         {
-            using (var context = new AppDbContext())
-            {
-                var zona = context.Zonas.Find(id);
-                context.Zonas.Remove(zona!);
-                context.SaveChanges();
-            }
+            throw new NotImplementedException();
         }
     }
 }

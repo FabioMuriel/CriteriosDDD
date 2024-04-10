@@ -8,9 +8,9 @@ namespace CriteriosDominio.Dominio.Servicios
         private readonly IRestriccionesDeZonasRepository _restriccionesDeZonasRepository;
         private readonly IRoomsRepository _roomsRepository;
         private readonly ISchedRepository _schedRepository;
-        private readonly IFisioterapeuta _fisioterapeuta;
+        private readonly IFisioterapeutaRepository _fisioterapeuta;
 
-        public ValidadorDeRestriccionesDeZonas(IRestriccionesDeZonasRepository restriccionesDeZonasRepository, IRoomsRepository roomsRepository, ISchedRepository schedRepository, IFisioterapeuta fisioterapeuta)
+        public ValidadorDeRestriccionesDeZonas(IRestriccionesDeZonasRepository restriccionesDeZonasRepository, IRoomsRepository roomsRepository, ISchedRepository schedRepository, IFisioterapeutaRepository fisioterapeuta)
         {
             _restriccionesDeZonasRepository = restriccionesDeZonasRepository;
             _roomsRepository = roomsRepository;
@@ -32,7 +32,7 @@ namespace CriteriosDominio.Dominio.Servicios
             }
 
             var fisioterapeuta = _fisioterapeuta.GetFisioterapeutaById(request.fisioterapeutaId);
-            if (fisioterapeuta.Rango == 30)
+            if (fisioterapeuta.Result.Rango == 30)
             {
                 return new ValidadorDeRestriccionesDeZonasResult
                 {
@@ -43,10 +43,14 @@ namespace CriteriosDominio.Dominio.Servicios
             }
 
             var sched = _schedRepository.GetSched();
-            var currentePositionRoom = _roomsRepository.GetRoomsById(request.roomId).ColumnOrder;
-            var ultimaPosicion = sched.Find(x => x.FisioterapeutaId == request.fisioterapeutaId)!.RoomId;
-            var lastPositionRoom = _roomsRepository.GetRoomsById(ultimaPosicion).ColumnOrder;
-            var restricciones = _restriccionesDeZonasRepository.GetRestriccionesDeZonas();
+            // var currentePositionRoom = _roomsRepository.GetRoomsById(request.roomId).ColumnOrder;
+            var currentePositionRoom = 0;
+            // var ultimaPosicion = sched.Find(x => x.FisioterapeutaId == request.fisioterapeutaId)!.RoomId;
+            var ultimaPosicion = 0;
+            // var lastPositionRoom = _roomsRepository.GetRoomsById(ultimaPosicion).ColumnOrder;
+            var lastPositionRoom = 0;
+            // var restricciones = _restriccionesDeZonasRepository.GetRestriccionesDeZonas();
+            var restricciones = new List<RestriccionesDeZonas>();
             bool isValidAgendamiento = false;
             string mensaje = string.Empty;
 
@@ -86,7 +90,7 @@ namespace CriteriosDominio.Dominio.Servicios
                 {
                     errores.Add("El roomId no puede ser 0");
                 }
-                if (request.fisioterapeutaId == 0)
+                if (string.IsNullOrEmpty(request.fisioterapeutaId.ToString()))
                 {
                     errores.Add("El fisioterapeutaId no puede ser 0");
                 }
@@ -99,12 +103,12 @@ namespace CriteriosDominio.Dominio.Servicios
                     errores.Add("La fecha no puede ser 0");
                 }
 
-                List<Rooms> fisioterapeutas = _roomsRepository.GetRooms();
+                // List<Rooms> fisioterapeutas = _roomsRepository.GetRooms();
 
-                if (fisioterapeutas.Find(x => x.RoomId == request.roomId) == null)
-                {
-                    errores.Add("El room no existe");
-                }
+                // if (fisioterapeutas.Find(x => x.RoomId == request.roomId) == null)
+                // {
+                //     errores.Add("El room no existe");
+                // }
             }
 
             return errores;
@@ -123,7 +127,7 @@ namespace CriteriosDominio.Dominio.Servicios
     public class ValidadorDeRestriccionesDeZonasRequest : IRestriccionesDeZonasRequest
     {
         public int roomId { get; set; }
-        public int fisioterapeutaId { get; set; }
+        public Guid fisioterapeutaId { get; set; }
         public int hora { get; set; }
         public DateTime fecha { get; set; }
     }

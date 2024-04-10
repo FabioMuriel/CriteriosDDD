@@ -17,7 +17,7 @@ namespace CriteriosDominio.Dominio.interfaces
     public interface IRestriccionesDeZonasRequest
     {
         int roomId { get; set; }
-        int fisioterapeutaId { get; set; }
+        Guid fisioterapeutaId { get; set; }
         int hora { get; set; }
         DateTime fecha { get; set; }
     }

@@ -1,6 +1,9 @@
+using CriteriosAplicaion.Services;
 using CriteriosDominio.Dominio.interfaces;
 using CriteriosDominio.Dominio.Servicios;
+using Infrastructure.contexto;
 using Infrastructure.src.repository;
+using Microsoft.EntityFrameworkCore;
 
 public class Program
 {
@@ -8,16 +11,29 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        //Services
-        builder.Services.AddScoped<IValidadorDeRestriccionesDeZonas, ValidadorDeRestriccionesDeZonas>();
+        // Add this line to register your in-memory database
+        builder.Services.AddDbContext<AppDbContext>(options => options.UseInMemoryDatabase("Asterisk"));
 
         //Repositories
+
+        //TODO:  Investigar si es necesari inyectar ambos
+
         builder.Services.AddScoped<IZonaRepository, ZonasRepository>();
-        builder.Services.AddScoped<IRoomsRepository, RoomsRepository>();
-        builder.Services.AddScoped<IRestriccionesDeZonasRepository, RestriccionesDeZonasRepository>();
-        builder.Services.AddScoped<IFisioterapeuta, FisioterapeutaRepository>();
         builder.Services.AddScoped<ValidadorDeRestriccionesDeZonas>();
         builder.Services.AddScoped<ISchedRepository, SchedRepository>();
+
+        builder.Services.AddScoped<IFisioterapeutaRepository, FisioterapeutaRepository>();
+        builder.Services.AddScoped<IFisioterapeutaService, FisioterapeutaService>();
+
+        builder.Services.AddScoped<IRestriccionesDeZonasRepository, RestriccionesDeZonasRepository>();
+        builder.Services.AddScoped<IRestriccionesDeZonasService, RestriccionesDeZonasService>();
+
+        builder.Services.AddScoped<IRoomsRepository, RoomsRepository>();
+        builder.Services.AddScoped<IRoomsService, RoomsService>();
+
+        // Add services to the container.
+        builder.Services.AddScoped<IValidadorDeRestriccionesDeZonas, ValidadorDeRestriccionesDeZonas>();
+
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
