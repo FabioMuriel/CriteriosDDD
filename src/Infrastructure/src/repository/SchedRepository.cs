@@ -13,6 +13,7 @@ namespace Infrastructure.src.repository
         public SchedRepository(AppDbContext context)
         {
             _context = context;
+        
         }
 
         public async Task AddSched(Sched sched)
@@ -45,7 +46,6 @@ namespace Infrastructure.src.repository
             }
 
             return sched;
-
         }
 
         public async Task<Sched> GetSchedById(Guid id)

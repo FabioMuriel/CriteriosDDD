@@ -16,49 +16,50 @@ namespace CriteriosDeProgramacion.Aplicacion.controller
         }
 
         [HttpGet]
-        public IActionResult GetRooms()
+        public async Task<IActionResult> GetRooms()
         {
-            return Ok(_roomsRepository.GetRooms());
+            var rooms = await _roomsRepository.GetRooms();
+            return Ok(rooms);
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetRoomsById(Guid id)
+        public async Task<IActionResult> GetRoomsById(Guid id)
         {
-            if (_roomsRepository.GetRoomsById(id) == null)
+            if (await _roomsRepository.GetRoomsById(id) == null)
             {
                 return BadRequest("No se encontro el room");
             }
             else
             {
-                _roomsRepository.GetRoomsById(id);
-                return Ok(_roomsRepository.GetRoomsById(id));
+                await _roomsRepository.GetRoomsById(id);
+                return Ok(await _roomsRepository.GetRoomsById(id));
             }
         }
 
         [HttpPost]
-        public IActionResult AddRooms([FromBody] Rooms rooms)
+        public async Task<IActionResult> AddRooms([FromBody] Rooms rooms)
         {
-            _roomsRepository.AddRooms(rooms);
+            await _roomsRepository.AddRooms(rooms);
             return Ok(rooms);
         }
 
         [HttpPut]
-        public IActionResult UpdateRooms([FromBody] Rooms rooms)
+        public async Task<IActionResult> UpdateRooms([FromBody] Rooms rooms)
         {
-            _roomsRepository.UpdateRooms(rooms);
+            await _roomsRepository.UpdateRooms(rooms);
             return Ok("Room actualizado correctamente");
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteRooms(Guid id)
+        public async Task<IActionResult> DeleteRooms(Guid id)
         {
-            if (_roomsRepository.GetRoomsById(id) == null)
+            if (await _roomsRepository.GetRoomsById(id) == null)
             {
                 return BadRequest("No se encontro el room");
             }
             else
             {
-                _roomsRepository.DeleteRooms(id);
+                await _roomsRepository.DeleteRooms(id);
                 return Ok("Room eliminado correctamente");
             }
         }

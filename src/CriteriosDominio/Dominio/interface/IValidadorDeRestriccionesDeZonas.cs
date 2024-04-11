@@ -2,7 +2,7 @@ namespace CriteriosDominio.Dominio.interfaces
 {
     public interface IValidadorDeRestriccionesDeZonas
     {
-        IValidadorDeRestriccionesDeZonasResult ValidarRestricciones(IRestriccionesDeZonasRequest request);
+        Task<IValidadorDeRestriccionesDeZonasResult> ValidarRestricciones(IRestriccionesDeZonasRequest request);
         List<string> ValidateService(IRestriccionesDeZonasRequest request);
 
     }
@@ -16,7 +16,7 @@ namespace CriteriosDominio.Dominio.interfaces
 
     public interface IRestriccionesDeZonasRequest
     {
-        int roomId { get; set; }
+        Guid roomId { get; set; }
         Guid fisioterapeutaId { get; set; }
         int hora { get; set; }
         DateTime fecha { get; set; }

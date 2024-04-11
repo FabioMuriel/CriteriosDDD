@@ -32,6 +32,7 @@ public class Program
         builder.Services.AddScoped<IZonaService, ZonaService>();
 
         // Add services to the container.
+        builder.Services.AddScoped<IPosicionDeAgendamientoValido, PosicionDeAgendamientoValido>();
         builder.Services.AddScoped<IValidadorDeRestriccionesDeZonas, ValidadorDeRestriccionesDeZonas>();
 
         builder.Services.AddControllers();

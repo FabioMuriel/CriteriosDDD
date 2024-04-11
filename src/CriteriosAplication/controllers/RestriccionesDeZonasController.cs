@@ -9,7 +9,7 @@ namespace CriteriosDeProgramacion.Aplicacion.controller
     [ApiController]
     public class RestriccionesDeZonasController : ControllerBase
     {
-        readonly IRestriccionesDeZonasService _restriccionesDeZonasRepository;
+        private readonly IRestriccionesDeZonasService _restriccionesDeZonasRepository;
 
         public RestriccionesDeZonasController(IRestriccionesDeZonasService restriccionesDeZonasRepository)
         {
@@ -17,9 +17,9 @@ namespace CriteriosDeProgramacion.Aplicacion.controller
         }
 
         [HttpGet]
-        public IActionResult GetRestriccionesDeZonas()
+        public async Task<IActionResult> GetRestriccionesDeZonas()
         {
-            return Ok(_restriccionesDeZonasRepository.GetRestriccionesDeZonas());
+            return Ok(await _restriccionesDeZonasRepository.GetRestriccionesDeZonas());
         }
     }
 }

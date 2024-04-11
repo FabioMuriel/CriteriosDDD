@@ -16,49 +16,49 @@ namespace CriteriosDeProgramacion.Aplicacion.controller
         }
 
         [HttpGet]
-        public IActionResult GetSched()
+        public async Task<IActionResult> GetSched()
         {
-            return Ok(_schedService.GetSched());
+            return Ok(await _schedService.GetSched());
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetSchedById(Guid id)
+        public async Task<IActionResult> GetSchedById(Guid id)
         {
-            if (_schedService.GetSchedById(id) == null)
+            if (await _schedService.GetSchedById(id) == null)
             {
                 return BadRequest("No se encontro el sched");
             }
             else
             {
-                return Ok(_schedService.GetSchedById(id));
+                return Ok(await _schedService.GetSchedById(id));
             }
         }
 
         [HttpPost]
-        public IActionResult AddSched(Sched sched)
+        public async Task<IActionResult> AddSched(Sched sched)
         {
-            _schedService.AddSched(sched);
+            await _schedService.AddSched(sched);
             return Ok(sched);
         }
 
         [HttpPut]
-        public IActionResult UpdateSched(Sched sched)
+        public async Task<IActionResult> UpdateSched(Sched sched)
         {
-            _schedService.UpdateSched(sched);
+            await _schedService.UpdateSched(sched);
             return Ok("Sched actualizado correctamente");
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteSched(Guid id)
+        public async Task<IActionResult> DeleteSched(Guid id)
         {
 
-            if (_schedService.GetSchedById(id) == null)
+            if (await _schedService.GetSchedById(id) == null)
             {
                 return BadRequest("No se encontro el sched");
             }
             else
             {
-                _schedService.DeleteSched(id);
+                await _schedService.DeleteSched(id);
                 return Ok("Sched eliminado correctamente");
             }
         }

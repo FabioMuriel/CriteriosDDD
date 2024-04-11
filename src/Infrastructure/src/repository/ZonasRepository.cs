@@ -21,13 +21,13 @@ namespace Infrastructure.src.repository
                 {
                     new Zona
                     (
-                        Guid.NewGuid(),
+                        Guid.Parse("769c08df-3478-4b9f-b221-ed15de8d7365"),
                         "CAMILLA",
                         "1, 2, 3, 4, 5, 6, 7, 8, 9, 10"
                     ),
                     new Zona
                     (
-                        Guid.NewGuid(),
+                        Guid.Parse("e7e08d2d-f0f6-4dce-a259-04eaff682b68"),
                         "MANO",
                         "11, 12, 13, 14, 15, 16, 17"
                     )

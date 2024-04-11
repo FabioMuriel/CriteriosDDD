@@ -16,11 +16,11 @@ namespace CriteriosDeProgramacion.Aplicacion.controller
         }
 
         [HttpPost]
-        public IActionResult Validar([FromBody] ValidadorDeRestriccionesDeZonasRequest request)
+        public async Task<IActionResult> Validar([FromBody] ValidadorDeRestriccionesDeZonasRequest request)
         {
-            var result = _validadorDeRestriccionesDeZonas.ValidarRestricciones(request);
+            var result = await _validadorDeRestriccionesDeZonas.ValidarRestricciones(request);
 
-            if (!result.Success)
+            if (!result.isValid)
             {
                 return BadRequest(result);
             }

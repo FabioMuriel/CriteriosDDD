@@ -14,48 +14,48 @@ namespace CriteriosDeProgramacion.Aplicacion.controller
             _zonaService = zonaService;
         }
         [HttpGet]
-        public IActionResult GetZonas()
+        public async Task<IActionResult> GetZonas()
         {
-            return Ok(_zonaService.GetZonas());
+            return Ok(await _zonaService.GetZonas());
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetZonaById(Guid id)
+        public async Task<IActionResult> GetZonaById(Guid id)
         {
-            if (_zonaService.GetZonaById(id) == null)
+            if (await _zonaService.GetZonaById(id) == null)
             {
                 return BadRequest("No se encontro la zona");
             }
             else
             {
-                return Ok(_zonaService.GetZonaById(id));
+                return Ok(await _zonaService.GetZonaById(id));
             }
         }
 
         [HttpPost]
-        public IActionResult AddZona([FromBody] Zona zona)
+        public async Task<IActionResult> AddZona([FromBody] Zona zona)
         {
-            _zonaService.AddZona(zona);
+            await _zonaService.AddZona(zona);
             return Ok(zona);
         }
 
         [HttpPut]
-        public IActionResult UpdateZona([FromBody] Zona zona)
+        public async Task<IActionResult> UpdateZona([FromBody] Zona zona)
         {
-            _zonaService.UpdateZona(zona);
+            await _zonaService.UpdateZona(zona);
             return Ok("Zona actualizada correctamente");
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteZona(Guid id)
+        public async Task<IActionResult> DeleteZona(Guid id)
         {
-            if (_zonaService.GetZonaById(id) == null)
+            if (await _zonaService.GetZonaById(id) == null)
             {
                 return BadRequest("No se encontro la zona");
             }
             else
             {
-                _zonaService.DeleteZona(id);
+                await _zonaService.DeleteZona(id);
                 return Ok("Zona eliminada correctamente");
             }
         }

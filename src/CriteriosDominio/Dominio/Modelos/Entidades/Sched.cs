@@ -4,15 +4,15 @@ namespace CriteriosDominio.Dominio.Modelos.Entidades
     {
         public Guid SchedId { get; private set; }
         public Guid FisioterapeutaId { get; private set; }
-        public int RoomId { get; private set; }
+        public Guid RoomId { get; private set; }
         public int Hora { get; private set; }
-        public DateOnly Fecha { get; private set; }
+        public DateTime Fecha { get; private set; }
 
         private Sched()
         {
         }
 
-        public Sched(Guid schedId, Guid fisioterapeutaId, int roomId, int hora, DateOnly fecha)
+        public Sched(Guid schedId, Guid fisioterapeutaId, Guid roomId, int hora, DateTime fecha)
         {
             SchedId = SetSchedId(schedId);
             FisioterapeutaId = SetFisioterapeutaId(fisioterapeutaId);
@@ -23,9 +23,9 @@ namespace CriteriosDominio.Dominio.Modelos.Entidades
 
         public Guid SetSchedId(Guid guid) => ValidarSchedId(guid);
         public Guid SetFisioterapeutaId(Guid fisioterapeutaId) => ValidarFisioterapeutaId(fisioterapeutaId);
-        public int SetRoomId(int roomId) => RoomId = roomId;
+        public Guid SetRoomId(Guid roomId) => RoomId = roomId;
         public int SetHora(int hora) => ValidarHora(hora);
-        public DateOnly SetFecha(DateOnly fecha) => ValidarFecha(fecha);
+        public DateTime SetFecha(DateTime fecha) => ValidarFecha(fecha);
 
         public static Guid ValidarSchedId(Guid schedId)
         {
@@ -57,14 +57,14 @@ namespace CriteriosDominio.Dominio.Modelos.Entidades
             return hora;
         }
 
-        private static DateOnly ValidarFecha(DateOnly fecha)
+        private static DateTime ValidarFecha(DateTime fecha)
         {
-            if (fecha == default(DateOnly))
+            if (fecha == null)
             {
                 throw new ArgumentException("La fecha no puede ser nula");
             }
 
-            if(fecha < DateOnly.FromDateTime(DateTime.Now))
+            if(fecha < DateTime.Now)
             {
                 throw new ArgumentException("La fecha no puede ser menor a la fecha actual");
             }

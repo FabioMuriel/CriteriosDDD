@@ -20,8 +20,8 @@ namespace Infrastructure.src.repository
                 _context.RestriccionesDeZonas.Add(new RestriccionesDeZonas(
                         Guid.NewGuid(),
                         "Restriccion 1",
-                        "1, 2, 3",
-                        "12, 13, 14",
+                        "1,2,3",
+                        "12,13,14",
                         "Los fisioterapeutas ubicados en camillas 1, 2 y 3 solo pueden atender en manos 12, 13 y 14"
                     )
                 );
@@ -29,8 +29,8 @@ namespace Infrastructure.src.repository
                 _context.RestriccionesDeZonas.Add(new RestriccionesDeZonas(
                         Guid.NewGuid(),
                         "Restriccion 2",
-                        "4, 5, 6",
-                        "15, 16, 17",
+                        "4,5,6",
+                        "15,16,17",
                         "Los fisioterapeutas ubicados en camillas 4, 5 y 6 solo pueden atender en manos 15, 16 y 17"
                     )
                 );

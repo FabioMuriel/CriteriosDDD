@@ -16,15 +16,16 @@ namespace CriteriosDeProgramacion.Aplicacion.controller
         }
 
         [HttpGet]
-        public IActionResult GetFisioterapeuta()
+        public async Task<IActionResult> GetFisioterapeuta()
         {
-            return Ok(_IFisioterapeuta.GetFisioterapeuta());
+            var fisioterapeuta = await _IFisioterapeuta.GetFisioterapeuta();
+            return Ok(fisioterapeuta);
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetFisioterapeutaById(Guid id)
+        public async Task<IActionResult> GetFisioterapeutaById(Guid id)
         {
-            var fisioterapeuta = _IFisioterapeuta.GetFisioterapeutaById(id);
+            var fisioterapeuta = await _IFisioterapeuta.GetFisioterapeutaById(id);
             if (fisioterapeuta == null)
             {
                 return BadRequest("No se encontró el fisioterapeuta");
@@ -36,30 +37,30 @@ namespace CriteriosDeProgramacion.Aplicacion.controller
         }
 
         [HttpPost]
-        public IActionResult AddFisioterapeuta(Fisioterapeuta fisioterapeuta)
+        public async Task<IActionResult> AddFisioterapeuta(Fisioterapeuta fisioterapeuta)
         {
-            _IFisioterapeuta.AddFisioterapeuta(fisioterapeuta);
+            await _IFisioterapeuta.AddFisioterapeuta(fisioterapeuta);
             return Ok(fisioterapeuta);
         }
 
         [HttpPut]
-        public IActionResult UpdateFisioterapeuta(Fisioterapeuta fisioterapeuta)
+        public async Task<IActionResult> UpdateFisioterapeuta(Fisioterapeuta fisioterapeuta)
         {
-        _IFisioterapeuta.UpdateFisioterapeuta(fisioterapeuta);
+            await _IFisioterapeuta.UpdateFisioterapeuta(fisioterapeuta);
             return Ok("Fisioterapeuta actualizado correctamente");
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteFisioterapeuta(Guid id)
+        public async Task<IActionResult> DeleteFisioterapeuta(Guid id)
         {
 
-            if (_IFisioterapeuta.GetFisioterapeutaById(id) == null)
+            if (await _IFisioterapeuta.GetFisioterapeutaById(id) == null)
             {
                 return BadRequest("No se encontro el fisioterapeuta");
             }
             else
             {
-                _IFisioterapeuta.DeleteFisioterapeuta(id);
+                await _IFisioterapeuta.DeleteFisioterapeuta(id);
                 return Ok("Fisioterapeuta eliminado correctamente");
             }
         }

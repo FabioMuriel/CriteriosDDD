@@ -1,20 +1,25 @@
 using CriteriosDominio.Dominio.interfaces;
 using CriteriosDominio.Dominio.Modelos.Entidades;
+using CriteriosDominio.Dominio.Servicios;
 
 namespace CriteriosAplicaion.Services
 {
     public class SchedService : ISchedService
     {
         private readonly ISchedRepository _schedRepository;
+        private readonly IPosicionDeAgendamientoValido _posicionDeAgendamientoValido;
 
-        public SchedService(ISchedRepository schedRepository)
+        public SchedService(ISchedRepository schedRepository, IPosicionDeAgendamientoValido posicionDeAgendamientoValido)
         {
             _schedRepository = schedRepository;
+            _posicionDeAgendamientoValido = posicionDeAgendamientoValido;
         }
 
         public async Task AddSched(Sched sched)
         {
-            if(sched == null)
+            await ValidarDisponibilidadDeEspacio(sched.RoomId, sched.FisioterapeutaId, sched.Hora, sched.Fecha);
+
+            if (sched == null)
             {
                 throw new ArgumentException("El sched no puede ser nulo");
             }
@@ -26,7 +31,7 @@ namespace CriteriosAplicaion.Services
         {
             Sched? sched = await _schedRepository.GetSchedById(id);
 
-            if(sched == null)
+            if (sched == null)
             {
                 throw new ArgumentException("El sched no existe");
             }
@@ -43,7 +48,7 @@ namespace CriteriosAplicaion.Services
         {
             Sched? sched = await _schedRepository.GetSchedById(id);
 
-            if(sched == null)
+            if (sched == null)
             {
                 throw new ArgumentException("El sched no existe");
             }
@@ -53,12 +58,30 @@ namespace CriteriosAplicaion.Services
 
         public async Task UpdateSched(Sched sched)
         {
-            if(sched == null)
+            await ValidarDisponibilidadDeEspacio(sched.RoomId, sched.FisioterapeutaId, sched.Hora, sched.Fecha);
+
+            if (sched == null)
             {
                 throw new ArgumentException("El sched no puede ser nulo");
             }
 
             await _schedRepository.UpdateSched(sched);
+        }
+
+        private async Task ValidarDisponibilidadDeEspacio(Guid RoomId, Guid FisioterapeutaId, int Hora, DateTime Fecha)
+        {
+            var espacioDisponible = await _posicionDeAgendamientoValido.ValidarPosicion(new PosicionDeAgendamientoValidoRequest
+            {
+                RoomId = RoomId,
+                FisioterapeutaId = FisioterapeutaId,
+                Hora = Hora,
+                Fecha = Fecha
+            });
+
+            if (espacioDisponible.EspacioDisponible == false)
+            {
+                throw new ArgumentException("El espacio no esta disponible");
+            }
         }
     }
 }

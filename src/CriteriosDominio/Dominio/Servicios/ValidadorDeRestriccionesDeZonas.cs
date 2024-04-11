@@ -10,70 +10,151 @@ namespace CriteriosDominio.Dominio.Servicios
         private readonly ISchedRepository _schedRepository;
         private readonly IFisioterapeutaRepository _fisioterapeuta;
 
-        public ValidadorDeRestriccionesDeZonas(IRestriccionesDeZonasRepository restriccionesDeZonasRepository, IRoomsRepository roomsRepository, ISchedRepository schedRepository, IFisioterapeutaRepository fisioterapeuta)
+        private readonly IPosicionDeAgendamientoValido _posicionDeAgendamientoValido;
+
+        public ValidadorDeRestriccionesDeZonas(IRestriccionesDeZonasRepository restriccionesDeZonasRepository, IRoomsRepository roomsRepository, ISchedRepository schedRepository, IFisioterapeutaRepository fisioterapeuta, IPosicionDeAgendamientoValido posicionDeAgendamientoValido)
         {
             _restriccionesDeZonasRepository = restriccionesDeZonasRepository;
             _roomsRepository = roomsRepository;
             _schedRepository = schedRepository;
             _fisioterapeuta = fisioterapeuta;
+            _posicionDeAgendamientoValido = posicionDeAgendamientoValido;
         }
 
-        public IValidadorDeRestriccionesDeZonasResult ValidarRestricciones(IRestriccionesDeZonasRequest request)
+        public async Task<IValidadorDeRestriccionesDeZonasResult> ValidarRestricciones(IRestriccionesDeZonasRequest request)
         {
 
-            var validations = ValidateService(request);
-            if (validations.Any())
+            var espacioDisponible = await _posicionDeAgendamientoValido.ValidarPosicion(new PosicionDeAgendamientoValidoRequest
+            {
+                RoomId = request.roomId,
+                FisioterapeutaId = request.fisioterapeutaId,
+                Hora = request.hora,
+                Fecha = request.fecha
+            });
+
+            if(espacioDisponible.EspacioDisponible == false)
+            {
+                return new ValidadorDeRestriccionesDeZonasResult
+                {
+                    Success = true,
+                    isValid = false,
+                    mensaje = "El espacio no esta disponible"
+                };
+            }
+
+            var Validations = ValidateService(request);
+            var roomsTask = _roomsRepository.GetRooms();
+            var restriccionesTask = _restriccionesDeZonasRepository.GetRestriccionesDeZonas();
+            var schedsTask = _schedRepository.GetSched();
+            bool fisioIsMaster = await FisioIsMaster(request.fisioterapeutaId);
+
+            if (Validations.Any())
             {
                 return new ValidadorDeRestriccionesDeZonasResult
                 {
                     Success = false,
-                    errores = validations
+                    errores = Validations
                 };
             }
 
-            var fisioterapeuta = _fisioterapeuta.GetFisioterapeutaById(request.fisioterapeutaId);
-            if (fisioterapeuta.Result.Rango == 30)
+            if (fisioIsMaster)
             {
                 return new ValidadorDeRestriccionesDeZonasResult
                 {
-                    isValid = true,
-                    mensaje = "Agendamiento valido",
-                    Success = true
+                    Success = true,
+                    isValid = true
                 };
             }
 
-            var sched = _schedRepository.GetSched();
-            // var currentePositionRoom = _roomsRepository.GetRoomsById(request.roomId).ColumnOrder;
-            var currentePositionRoom = 0;
-            // var ultimaPosicion = sched.Find(x => x.FisioterapeutaId == request.fisioterapeutaId)!.RoomId;
-            var ultimaPosicion = 0;
-            // var lastPositionRoom = _roomsRepository.GetRoomsById(ultimaPosicion).ColumnOrder;
-            var lastPositionRoom = 0;
-            // var restricciones = _restriccionesDeZonasRepository.GetRestriccionesDeZonas();
-            var restricciones = new List<RestriccionesDeZonas>();
-            bool isValidAgendamiento = false;
-            string mensaje = string.Empty;
+            await Task.WhenAll(roomsTask, restriccionesTask, schedsTask);
 
-            foreach (var restriccion in restricciones)
+            var rooms = await roomsTask;
+            var restricciones = await restriccionesTask;
+            var scheds = await schedsTask;
+
+            var requestLastPositionsFisio = scheds.Where(s => s.FisioterapeutaId == request.fisioterapeutaId && s.Fecha == request.fecha && s.Hora == request.hora);
+
+            var posicionDeseada = rooms.First(r => r.RoomId == request.roomId);
+
+            if (requestLastPositionsFisio is null)
             {
-                if (restriccion.FromRooms.Split('-')[lastPositionRoom] == "1" && restriccion.ToRooms.Split('-')[currentePositionRoom] == "1")
+                return new ValidadorDeRestriccionesDeZonasResult
                 {
-                    isValidAgendamiento = true;
-                    break;
-                }
-                else
-                {
-                    mensaje = restriccion.Nombre;
-                    break;
-                }
+                    Success = true,
+                    isValid = true,
+                    mensaje = "El fisioterapeuta no tiene restricciones"
+                };
             }
+
+            List<bool> agendamientoValido = new List<bool>();
+            string descriptionRestriction = string.Empty;
+
+            foreach (var lastPosition in requestLastPositionsFisio)
+            {
+
+                int restriccionPrescisa = 0;
+
+                var areaRoomLastPosition = rooms.First(r => r.RoomId == lastPosition.RoomId);
+
+                if (areaRoomLastPosition.ZonaId == posicionDeseada.ZonaId)
+                {
+                    agendamientoValido.Add(true);
+                    continue;
+                }
+
+                restriccionPrescisa = restricciones
+                    .Where(
+                        r => r.FromRooms.Split(',').Contains(areaRoomLastPosition.RoomId.ToString()) &&
+                        r.ToRooms.Split(',').Contains(posicionDeseada.RoomId.ToString())
+                    ).Count();
+
+                if (restriccionPrescisa > 0)
+                {
+                    agendamientoValido.Add(true);
+                    continue;
+                }
+
+                foreach (var restriccion in restricciones)
+                {
+                    List<string> fromRooms = restriccion.FromRooms.Split(',').ToList();
+
+                    if (fromRooms.Contains(areaRoomLastPosition.RoomId.ToString()))
+                    {
+                        List<string> toRooms = restriccion.ToRooms.Split(',').ToList();
+
+                        if (toRooms.Contains(posicionDeseada.RoomId.ToString()))
+                        {
+                            agendamientoValido.Add(true);
+                            break;
+                        }
+                        else
+                        {
+                            agendamientoValido.Add(false);
+                            descriptionRestriction = restriccion.Regla;
+                            break;
+                        }
+
+                    }
+
+                }
+
+            }
+
+            bool isValid = agendamientoValido.All(a => a);
 
             return new ValidadorDeRestriccionesDeZonasResult
             {
-                isValid = isValidAgendamiento,
-                mensaje = mensaje == string.Empty ? "Agendamiento valido" : mensaje,
-                Success = true
+                Success = true,
+                isValid = isValid,
+                mensaje = "El fisioterapeuta no tiene restricciones"
             };
+        }
+
+        private async Task<bool> FisioIsMaster(Guid fisioterapeutaId)
+        {
+            Fisioterapeuta? fisio = await _fisioterapeuta.GetFisioterapeutaById(fisioterapeutaId);
+
+            return fisio?.Rango == 30;
         }
 
         public List<string> ValidateService(IRestriccionesDeZonasRequest request)
@@ -86,7 +167,7 @@ namespace CriteriosDominio.Dominio.Servicios
             }
             else
             {
-                if (request.roomId == 0)
+                if (request.roomId == Guid.Empty)
                 {
                     errores.Add("El roomId no puede ser 0");
                 }
@@ -94,26 +175,21 @@ namespace CriteriosDominio.Dominio.Servicios
                 {
                     errores.Add("El fisioterapeutaId no puede ser 0");
                 }
-                if (request.hora < 6)
+                if (request.hora < 6 || request.hora > 18)
                 {
-                    errores.Add("La hora no puede ser menor a 6");
+                    errores.Add("La hora no puede ser menor a 6 ni mayor a 18");
                 }
                 if (request.fecha == DateTime.MinValue)
                 {
                     errores.Add("La fecha no puede ser 0");
                 }
 
-                // List<Rooms> fisioterapeutas = _roomsRepository.GetRooms();
-
-                // if (fisioterapeutas.Find(x => x.RoomId == request.roomId) == null)
-                // {
-                //     errores.Add("El room no existe");
-                // }
             }
 
             return errores;
 
         }
+
     }
 
     public class ValidadorDeRestriccionesDeZonasResult : IValidadorDeRestriccionesDeZonasResult
@@ -126,7 +202,7 @@ namespace CriteriosDominio.Dominio.Servicios
 
     public class ValidadorDeRestriccionesDeZonasRequest : IRestriccionesDeZonasRequest
     {
-        public int roomId { get; set; }
+        public Guid roomId { get; set; }
         public Guid fisioterapeutaId { get; set; }
         public int hora { get; set; }
         public DateTime fecha { get; set; }

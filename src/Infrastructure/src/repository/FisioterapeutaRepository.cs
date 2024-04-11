@@ -16,9 +16,9 @@ namespace Infrastructure.src.repository
 
             if (_context.Fisioterapeutas.CountAsync().Result == 0)
             {
-                _context.Fisioterapeutas.Add(new Fisioterapeuta(Guid.NewGuid(), "Juan", "Perez", 10));
-                _context.Fisioterapeutas.Add(new Fisioterapeuta(Guid.NewGuid(), "Maria", "Gonzalez", 20));
-                _context.Fisioterapeutas.Add(new Fisioterapeuta(Guid.NewGuid(), "Pedro", "Rodriguez", 30));
+                _context.Fisioterapeutas.Add(new Fisioterapeuta(Guid.Parse("cc4e89ef-4ee5-4388-a90f-2f646aeeaa64"), "Juan", "Perez", 10));
+                _context.Fisioterapeutas.Add(new Fisioterapeuta(Guid.Parse("0c41c77b-7f23-4901-84be-dd941282558d"), "Maria", "Gonzalez", 20));
+                _context.Fisioterapeutas.Add(new Fisioterapeuta(Guid.Parse("54e9bc4a-43bc-44e1-8ac0-6791ebd31852"), "Pedro", "Rodriguez", 30));
                 _context.SaveChanges();
             }
 
