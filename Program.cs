@@ -1,3 +1,4 @@
+using CriteriosAplicaion.inerfaces;
 using CriteriosAplicaion.Services;
 using CriteriosAplication.services;
 using CriteriosDominio.Dominio.interfaces;
@@ -30,6 +31,8 @@ public class Program
 
         builder.Services.AddScoped<IZonaRepository, ZonasRepository>();
         builder.Services.AddScoped<IZonaService, ZonaService>();
+
+        builder.Services.AddScoped<IErrorFactory, ErrorFactory>();
 
         // Add services to the container.
         builder.Services.AddScoped<IPosicionDeAgendamientoValido, PosicionDeAgendamientoValido>();

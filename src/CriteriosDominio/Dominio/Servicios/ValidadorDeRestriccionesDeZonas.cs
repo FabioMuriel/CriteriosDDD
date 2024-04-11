@@ -32,16 +32,6 @@ namespace CriteriosDominio.Dominio.Servicios
                 Fecha = request.fecha
             });
 
-            if(espacioDisponible.EspacioDisponible == false)
-            {
-                return new ValidadorDeRestriccionesDeZonasResult
-                {
-                    Success = true,
-                    isValid = false,
-                    mensaje = "El espacio no esta disponible"
-                };
-            }
-
             var Validations = ValidateService(request);
             var roomsTask = _roomsRepository.GetRooms();
             var restriccionesTask = _restriccionesDeZonasRepository.GetRestriccionesDeZonas();
@@ -72,7 +62,11 @@ namespace CriteriosDominio.Dominio.Servicios
             var restricciones = await restriccionesTask;
             var scheds = await schedsTask;
 
-            var requestLastPositionsFisio = scheds.Where(s => s.FisioterapeutaId == request.fisioterapeutaId && s.Fecha == request.fecha && s.Hora == request.hora);
+            var requestLastPositionsFisio = scheds
+                .Where(s => s.FisioterapeutaId == request.fisioterapeutaId &&
+                s.Fecha == request.fecha &&
+                s.Hora == request.hora
+            ).ToList();
 
             var posicionDeseada = rooms.First(r => r.RoomId == request.roomId);
 
@@ -91,7 +85,6 @@ namespace CriteriosDominio.Dominio.Servicios
 
             foreach (var lastPosition in requestLastPositionsFisio)
             {
-
                 int restriccionPrescisa = 0;
 
                 var areaRoomLastPosition = rooms.First(r => r.RoomId == lastPosition.RoomId);
@@ -104,8 +97,8 @@ namespace CriteriosDominio.Dominio.Servicios
 
                 restriccionPrescisa = restricciones
                     .Where(
-                        r => r.FromRooms.Split(',').Contains(areaRoomLastPosition.RoomId.ToString()) &&
-                        r.ToRooms.Split(',').Contains(posicionDeseada.RoomId.ToString())
+                        r => r.FromRooms.Split(',').Contains(areaRoomLastPosition.ColumnOrder.ToString()) &&
+                        r.ToRooms.Split(',').Contains(posicionDeseada.ColumnOrder.ToString())
                     ).Count();
 
                 if (restriccionPrescisa > 0)
@@ -118,11 +111,11 @@ namespace CriteriosDominio.Dominio.Servicios
                 {
                     List<string> fromRooms = restriccion.FromRooms.Split(',').ToList();
 
-                    if (fromRooms.Contains(areaRoomLastPosition.RoomId.ToString()))
+                    if (fromRooms.Contains(areaRoomLastPosition.ColumnOrder.ToString()))
                     {
                         List<string> toRooms = restriccion.ToRooms.Split(',').ToList();
 
-                        if (toRooms.Contains(posicionDeseada.RoomId.ToString()))
+                        if (toRooms.Contains(posicionDeseada.ColumnOrder.ToString()))
                         {
                             agendamientoValido.Add(true);
                             break;
@@ -133,11 +126,8 @@ namespace CriteriosDominio.Dominio.Servicios
                             descriptionRestriction = restriccion.Regla;
                             break;
                         }
-
                     }
-
                 }
-
             }
 
             bool isValid = agendamientoValido.All(a => a);
@@ -146,7 +136,7 @@ namespace CriteriosDominio.Dominio.Servicios
             {
                 Success = true,
                 isValid = isValid,
-                mensaje = "El fisioterapeuta no tiene restricciones"
+                mensaje = descriptionRestriction
             };
         }
 
@@ -179,11 +169,10 @@ namespace CriteriosDominio.Dominio.Servicios
                 {
                     errores.Add("La hora no puede ser menor a 6 ni mayor a 18");
                 }
-                if (request.fecha == DateTime.MinValue)
+                if (string.IsNullOrEmpty(request.fecha) || request.fecha == "0" || request.fecha == "01/01/0001")
                 {
-                    errores.Add("La fecha no puede ser 0");
+                    errores.Add("La fecha es invalida");
                 }
-
             }
 
             return errores;
@@ -205,6 +194,6 @@ namespace CriteriosDominio.Dominio.Servicios
         public Guid roomId { get; set; }
         public Guid fisioterapeutaId { get; set; }
         public int hora { get; set; }
-        public DateTime fecha { get; set; }
+        public string fecha { get; set; }
     }
 }

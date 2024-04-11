@@ -6,13 +6,13 @@ namespace CriteriosDominio.Dominio.Modelos.Entidades
         public Guid FisioterapeutaId { get; private set; }
         public Guid RoomId { get; private set; }
         public int Hora { get; private set; }
-        public DateTime Fecha { get; private set; }
+        public string Fecha { get; private set; }
 
         private Sched()
         {
         }
 
-        public Sched(Guid schedId, Guid fisioterapeutaId, Guid roomId, int hora, DateTime fecha)
+        public Sched(Guid schedId, Guid fisioterapeutaId, Guid roomId, int hora, string fecha)
         {
             SchedId = SetSchedId(schedId);
             FisioterapeutaId = SetFisioterapeutaId(fisioterapeutaId);
@@ -25,7 +25,7 @@ namespace CriteriosDominio.Dominio.Modelos.Entidades
         public Guid SetFisioterapeutaId(Guid fisioterapeutaId) => ValidarFisioterapeutaId(fisioterapeutaId);
         public Guid SetRoomId(Guid roomId) => RoomId = roomId;
         public int SetHora(int hora) => ValidarHora(hora);
-        public DateTime SetFecha(DateTime fecha) => ValidarFecha(fecha);
+        public string SetFecha(string fecha) => ValidarFecha(fecha);
 
         public static Guid ValidarSchedId(Guid schedId)
         {
@@ -57,14 +57,14 @@ namespace CriteriosDominio.Dominio.Modelos.Entidades
             return hora;
         }
 
-        private static DateTime ValidarFecha(DateTime fecha)
+        private static string ValidarFecha(string fecha)
         {
             if (fecha == null)
             {
                 throw new ArgumentException("La fecha no puede ser nula");
             }
 
-            if(fecha < DateTime.Now)
+            if(DateOnly.Parse(fecha) < DateOnly.FromDateTime(DateTime.Now))
             {
                 throw new ArgumentException("La fecha no puede ser menor a la fecha actual");
             }

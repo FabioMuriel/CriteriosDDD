@@ -8,35 +8,63 @@ namespace CriteriosAplicaion.Services
     {
         private readonly ISchedRepository _schedRepository;
         private readonly IPosicionDeAgendamientoValido _posicionDeAgendamientoValido;
+        private readonly IValidadorDeRestriccionesDeZonas _validadorDeRestriccionesDeZonas;
 
-        public SchedService(ISchedRepository schedRepository, IPosicionDeAgendamientoValido posicionDeAgendamientoValido)
+        public SchedService(ISchedRepository schedRepository, IPosicionDeAgendamientoValido posicionDeAgendamientoValido, IValidadorDeRestriccionesDeZonas validadorDeRestriccionesDeZonas)
         {
             _schedRepository = schedRepository;
             _posicionDeAgendamientoValido = posicionDeAgendamientoValido;
+            _validadorDeRestriccionesDeZonas = validadorDeRestriccionesDeZonas;
         }
 
-        public async Task AddSched(Sched sched)
+        public async Task<IGenericResponse> AddSched(Sched sched)
         {
-            await ValidarDisponibilidadDeEspacio(sched.RoomId, sched.FisioterapeutaId, sched.Hora, sched.Fecha);
+            var validationError = await ValidarDisponibilidadDeEspacio(sched.RoomId, sched.FisioterapeutaId, sched.Hora, sched.Fecha);
 
+            if (validationError.Any())
+            {
+                return new GenericResponse
+                {
+                    Success = false,
+                    Message = "Error al crear la cita.",
+                    Errors = validationError
+                };
+            }
+           
             if (sched == null)
             {
                 throw new ArgumentException("El sched no puede ser nulo");
             }
 
             await _schedRepository.AddSched(sched);
+
+            return new GenericResponse
+            {
+                Success = true,
+                Message = "Cita creada correctamente."
+            };
         }
 
-        public async Task DeleteSched(Guid id)
+        public async Task<IGenericResponse> DeleteSched(Guid id)
         {
             Sched? sched = await _schedRepository.GetSchedById(id);
 
             if (sched == null)
             {
-                throw new ArgumentException("El sched no existe");
+                return new GenericResponse
+                {
+                    Success = false,
+                    Message = "No se encontro la cita"
+                };
             }
 
             await _schedRepository.DeleteSched(id);
+
+            return new GenericResponse
+            {
+                Success = true,
+                Message = "Cita eliminada correctamente"
+            };
         }
 
         public async Task<IEnumerable<Sched>> GetSched()
@@ -56,9 +84,19 @@ namespace CriteriosAplicaion.Services
             return sched;
         }
 
-        public async Task UpdateSched(Sched sched)
+        public async Task<IGenericResponse> UpdateSched(Sched sched)
         {
-            await ValidarDisponibilidadDeEspacio(sched.RoomId, sched.FisioterapeutaId, sched.Hora, sched.Fecha);
+            var validationError = await ValidarDisponibilidadDeEspacio(sched.RoomId, sched.FisioterapeutaId, sched.Hora, sched.Fecha);
+
+            if (validationError.Any())
+            {
+                return new GenericResponse
+                {
+                    Success = false,
+                    Message = "Error al actualizar la cita.",
+                    Errors = validationError
+                };
+            }
 
             if (sched == null)
             {
@@ -66,10 +104,21 @@ namespace CriteriosAplicaion.Services
             }
 
             await _schedRepository.UpdateSched(sched);
+
+            return new GenericResponse
+            {
+                Success = true,
+                Message = "Cita actualizada correctamente."
+            };
+
         }
 
-        private async Task ValidarDisponibilidadDeEspacio(Guid RoomId, Guid FisioterapeutaId, int Hora, DateTime Fecha)
+        //TODO: Verificar si es necesario mover este metodo a un servicio de validacion
+        private async Task<IEnumerable<string>> ValidarDisponibilidadDeEspacio(Guid RoomId, Guid FisioterapeutaId, int Hora, string Fecha)
         {
+
+            List<string> errores = new List<string>();
+
             var espacioDisponible = await _posicionDeAgendamientoValido.ValidarPosicion(new PosicionDeAgendamientoValidoRequest
             {
                 RoomId = RoomId,
@@ -78,10 +127,34 @@ namespace CriteriosAplicaion.Services
                 Fecha = Fecha
             });
 
+            var criterioDeEspacio = await _validadorDeRestriccionesDeZonas.ValidarRestricciones(
+                new ValidadorDeRestriccionesDeZonasRequest
+                {
+                    roomId = RoomId,
+                    fisioterapeutaId = FisioterapeutaId,
+                    hora = Hora,
+                    fecha = Fecha
+                }
+            );
+
             if (espacioDisponible.EspacioDisponible == false)
             {
-                throw new ArgumentException("El espacio no esta disponible");
+                errores.Add(espacioDisponible.Message);
             }
+
+            if(criterioDeEspacio.isValid == false)
+            {
+                errores.Add(criterioDeEspacio.mensaje);
+            }
+
+            return errores;
+        }
+
+        public class GenericResponse : IGenericResponse
+        {
+            public bool Success { get; set; }
+            public string Message { get; set; }
+            public IEnumerable<string> Errors { get; set; }
         }
     }
 }

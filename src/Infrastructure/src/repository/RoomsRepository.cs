@@ -33,10 +33,10 @@ namespace Infrastructure.src.repository
                     new(Guid.Parse("8f9be634-4864-475e-a08d-a94ec25b8d78"), "MANO 2", Guid.Parse("e7e08d2d-f0f6-4dce-a259-04eaff682b68"), 12),
                     new(Guid.Parse("e57df18a-fcd8-46a4-ba81-aaad6fbbd98f"), "MANO 3", Guid.Parse("e7e08d2d-f0f6-4dce-a259-04eaff682b68"), 13),
                     new(Guid.Parse("a70bfa47-00c0-4de1-818d-053d4b31a7c9"), "MANO 4", Guid.Parse("e7e08d2d-f0f6-4dce-a259-04eaff682b68"), 14),
-                    new(Guid.Parse("4d0a7834-0dc2-4bfb-8c7f-e4578c5d5fa3"), "MANO 5", Guid.Parse("e7e08d2d-f0f6-4dce-a259-04eaff682b68"), 11),
-                    new(Guid.Parse("c02cf78c-6d8f-4f53-b4b6-2257b143cbdf"), "MANO 6", Guid.Parse("e7e08d2d-f0f6-4dce-a259-04eaff682b68"), 12),
-                    new(Guid.Parse("f6b33396-c180-4154-b5ad-26ba50d52e44"), "MANO 7", Guid.Parse("e7e08d2d-f0f6-4dce-a259-04eaff682b68"), 13),
-                    new(Guid.Parse("ed04bf65-bd66-4a53-8875-a14a5bf0e0a7"), "MANO 8", Guid.Parse("e7e08d2d-f0f6-4dce-a259-04eaff682b68"), 14),
+                    new(Guid.Parse("4d0a7834-0dc2-4bfb-8c7f-e4578c5d5fa3"), "MANO 5", Guid.Parse("e7e08d2d-f0f6-4dce-a259-04eaff682b68"), 15),
+                    new(Guid.Parse("c02cf78c-6d8f-4f53-b4b6-2257b143cbdf"), "MANO 6", Guid.Parse("e7e08d2d-f0f6-4dce-a259-04eaff682b68"), 16),
+                    new(Guid.Parse("f6b33396-c180-4154-b5ad-26ba50d52e44"), "MANO 7", Guid.Parse("e7e08d2d-f0f6-4dce-a259-04eaff682b68"), 17),
+                    new(Guid.Parse("ed04bf65-bd66-4a53-8875-a14a5bf0e0a7"), "MANO 8", Guid.Parse("e7e08d2d-f0f6-4dce-a259-04eaff682b68"), 18),
 
                 });
 

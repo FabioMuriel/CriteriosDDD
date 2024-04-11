@@ -38,9 +38,18 @@ namespace Infrastructure.src.repository
                 _context.RestriccionesDeZonas.Add(new RestriccionesDeZonas(
                         Guid.NewGuid(),
                         "Restriccion 3",
-                        "FromRooms 3",
-                        "ToRooms 3",
-                        "Regla 3"
+                        "1,2.3,4,5,6,7,8,9,10",
+                        "1,2,3,4,5,6,7,8,9,10",
+                        "Los fisioterapeutas ubicados en camillas pueden programar en cualquier camilla"
+                    )
+                );
+
+                _context.RestriccionesDeZonas.Add(new RestriccionesDeZonas(
+                        Guid.NewGuid(),
+                        "Restriccion 4",
+                        "11,12,13,14,15,16,17,18",
+                        "11,12,13,14,15,16,17,18",
+                        "Los fisioteapeutas ubicados en manos pueden programar en cualquier mano"
                     )
                 );
 

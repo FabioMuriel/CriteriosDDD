@@ -19,6 +19,6 @@ namespace CriteriosDominio.Dominio.interfaces
         Guid roomId { get; set; }
         Guid fisioterapeutaId { get; set; }
         int hora { get; set; }
-        DateTime fecha { get; set; }
+        string fecha { get; set; }
     }
 }

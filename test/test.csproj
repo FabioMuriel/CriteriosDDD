@@ -20,4 +20,10 @@
     <Using Include="Xunit" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\src\CriteriosAplication\CriteriosAplication.csproj" />
+    <ProjectReference Include="..\src\CriteriosDominio\CriteriosDominio.csproj" />
+    <ProjectReference Include="..\src\Infrastructure\Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

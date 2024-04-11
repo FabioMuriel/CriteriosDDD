@@ -6,8 +6,8 @@ namespace CriteriosDominio.Dominio.interfaces
     {
         Task<IEnumerable<Sched>> GetSched();
         Task<Sched?> GetSchedById(Guid id);
-        Task AddSched(Sched sched);
-        Task UpdateSched(Sched sched);
-        Task DeleteSched(Guid id);
+        Task<IGenericResponse> AddSched(Sched sched);
+        Task<IGenericResponse> UpdateSched(Sched sched);
+        Task<IGenericResponse> DeleteSched(Guid id);
     }
 }

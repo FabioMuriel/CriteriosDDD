@@ -1,5 +1,4 @@
 using CriteriosDominio.Dominio.interfaces;
-using CriteriosDominio.Dominio.Modelos.Entidades;
 
 namespace CriteriosDominio.Dominio.Servicios
 {
@@ -35,6 +34,7 @@ namespace CriteriosDominio.Dominio.Servicios
     public class PosicionDeAgendamientoValidoResult : IPosicionDeAgendamientoValidoResult
     {
         public bool Success { get; set; }
+        public string Message { get; set; } = "El espacio no esta disponible, ya hay una cita asignada en ese horario";
         public bool EspacioDisponible { get; set; }
     }
 
@@ -43,7 +43,7 @@ namespace CriteriosDominio.Dominio.Servicios
         public Guid RoomId { get; set; }
         public Guid FisioterapeutaId { get; set; }
         public int Hora { get; set; }
-        public DateTime Fecha { get; set; }
+        public string Fecha { get; set; }
     }
 
 }

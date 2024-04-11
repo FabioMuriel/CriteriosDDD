@@ -37,15 +37,27 @@ namespace CriteriosDeProgramacion.Aplicacion.controller
         [HttpPost]
         public async Task<IActionResult> AddSched(Sched sched)
         {
-            await _schedService.AddSched(sched);
-            return Ok(sched);
+            var executeSchedService = await _schedService.AddSched(sched);
+
+            if (!executeSchedService.Success)
+            {
+                return BadRequest(executeSchedService);
+            }
+
+            return Ok(executeSchedService);
         }
 
         [HttpPut]
         public async Task<IActionResult> UpdateSched(Sched sched)
         {
-            await _schedService.UpdateSched(sched);
-            return Ok("Sched actualizado correctamente");
+            var excuteSchedUpdateService = await _schedService.UpdateSched(sched);
+
+            if (!excuteSchedUpdateService.Success)
+            {
+                return BadRequest(excuteSchedUpdateService);
+            }
+
+            return Ok(excuteSchedUpdateService);
         }
 
         [HttpDelete("{id}")]

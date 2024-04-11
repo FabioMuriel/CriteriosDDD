@@ -10,12 +10,13 @@ namespace CriteriosDominio.Dominio.interfaces
         Guid RoomId { get; set; }
         Guid FisioterapeutaId { get; set; }
         int Hora { get; set; }
-        DateTime Fecha { get; set; }
+        string Fecha { get; set; }
     }
 
     public interface IPosicionDeAgendamientoValidoResult
     {
         bool Success { get; set; }
+        string Message { get; set; }
         bool EspacioDisponible { get; set; }
     }
 }
