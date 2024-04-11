@@ -35,29 +35,43 @@ namespace CriteriosDeProgramacion.Aplicacion.controller
         [HttpPost]
         public async Task<IActionResult> AddZona([FromBody] Zona zona)
         {
-            await _zonaService.AddZona(zona);
-            return Ok(zona);
+            var response = await _zonaService.AddZona(zona);
+
+            if (!response.Success)
+            {
+                return BadRequest(response);
+            }
+
+            return Ok(response);
         }
 
         [HttpPut]
         public async Task<IActionResult> UpdateZona([FromBody] Zona zona)
         {
-            await _zonaService.UpdateZona(zona);
-            return Ok("Zona actualizada correctamente");
+            var response = await _zonaService.UpdateZona(zona);
+
+            if (!response.Success)
+            {
+                return BadRequest(response);
+            }
+
+            return Ok(response);
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteZona(Guid id)
         {
-            if (await _zonaService.GetZonaById(id) == null)
+
+            var response = await _zonaService.DeleteZona(id);
+
+            if (!response.Success)
             {
-                return BadRequest("No se encontro la zona");
+                return BadRequest(response);
             }
-            else
-            {
-                await _zonaService.DeleteZona(id);
-                return Ok("Zona eliminada correctamente");
-            }
+
+            await _zonaService.DeleteZona(id);
+            return Ok(response);
+
         }
     }
 }

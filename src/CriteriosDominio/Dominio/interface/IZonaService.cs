@@ -6,8 +6,8 @@ namespace CriteriosDominio.Dominio.interfaces
     {
         Task<IEnumerable<Zona>> GetZonas();
         Task<Zona?> GetZonaById(Guid id);
-        Task AddZona(Zona zona);
-        Task UpdateZona(Zona zona);
-        Task DeleteZona(Guid id);
+        Task<IGenericResponse> AddZona(Zona zona);
+        Task<IGenericResponse> UpdateZona(Zona zona);
+        Task<IGenericResponse> DeleteZona(Guid id);
     }
 }

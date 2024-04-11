@@ -12,26 +12,47 @@ namespace CriteriosAplication.services
             _zonaRepository = zonaRepository;
         }
 
-        public async Task AddZona(Zona zona)
+        public async Task<IGenericResponse> AddZona(Zona zona)
         {
             if (zona == null)
             {
-                throw new ArgumentException("La zona no puede ser nula");
+                return new GenericResponse
+                {
+                    Success = false,
+                    Message = "La zona no puede ser nula"
+                };
             }
 
             await _zonaRepository.AddZona(zona);
+
+            return new GenericResponse
+            {
+                Success = true,
+                Message = "Zona creada correctamente"
+            };
+            
         }
 
-        public async Task DeleteZona(Guid id)
+        public async Task<IGenericResponse> DeleteZona(Guid id)
         {
             Zona? zona = await _zonaRepository.GetZonaById(id);
 
             if (zona == null)
             {
-                throw new ArgumentException("La zona no existe");
+                return new GenericResponse
+                {
+                    Success = false,
+                    Message = "No se encontro la zona"
+                };
             }
 
             await _zonaRepository.DeleteZona(id);
+
+            return new GenericResponse
+            {
+                Success = true,
+                Message = "Zona eliminada correctamente"
+            };
         }
 
         public async Task<Zona?> GetZonaById(Guid id)
@@ -51,14 +72,31 @@ namespace CriteriosAplication.services
             return await _zonaRepository.GetZonas();
         }
 
-        public async Task UpdateZona(Zona zona)
+        public async Task<IGenericResponse> UpdateZona(Zona zona)
         {
             if (zona == null)
             {
-                throw new ArgumentException("La zona no puede ser nula");
+                return new GenericResponse
+                {
+                    Success = false,
+                    Message = "La zona no puede ser nula"
+                };
             }
 
             await _zonaRepository.UpdateZona(zona);
+
+            return new GenericResponse
+            {
+                Success = true,
+                Message = "Zona actualizada correctamente"
+            };
+        }
+
+        public class GenericResponse : IGenericResponse
+        {
+            public bool Success { get; set; }
+            public string Message { get; set; }
+            public IEnumerable<string> Errors { get; set; }
         }
     }
 }
