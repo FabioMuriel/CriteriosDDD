@@ -39,30 +39,34 @@ namespace CriteriosDeProgramacion.Aplicacion.controller
         [HttpPost]
         public async Task<IActionResult> AddFisioterapeuta(Fisioterapeuta fisioterapeuta)
         {
-            await _IFisioterapeuta.AddFisioterapeuta(fisioterapeuta);
-            return Ok(fisioterapeuta);
+            var response = await _IFisioterapeuta.AddFisioterapeuta(fisioterapeuta);
+
+            if (!response.Success)
+            {
+                return BadRequest(response);
+            }
+
+            return Ok(response);
         }
 
         [HttpPut]
         public async Task<IActionResult> UpdateFisioterapeuta(Fisioterapeuta fisioterapeuta)
         {
-            await _IFisioterapeuta.UpdateFisioterapeuta(fisioterapeuta);
-            return Ok("Fisioterapeuta actualizado correctamente");
+            var response = await _IFisioterapeuta.UpdateFisioterapeuta(fisioterapeuta);
+            return Ok(response);
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteFisioterapeuta(Guid id)
         {
+            var response = await _IFisioterapeuta.DeleteFisioterapeuta(id);
 
-            if (await _IFisioterapeuta.GetFisioterapeutaById(id) == null)
+            if (!response.Success)
             {
-                return BadRequest("No se encontro el fisioterapeuta");
+                return BadRequest(response);
             }
-            else
-            {
-                await _IFisioterapeuta.DeleteFisioterapeuta(id);
-                return Ok("Fisioterapeuta eliminado correctamente");
-            }
+
+            return Ok(response);
         }
 
     }

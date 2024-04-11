@@ -4,8 +4,8 @@ namespace CriteriosDominio.Dominio.interfaces{
     public interface IRoomsService{
         Task<IEnumerable<Rooms>> GetRooms();
         Task<Rooms?> GetRoomsById(Guid id);
-        Task AddRooms(Rooms rooms);
-        Task DeleteRooms(Guid id);
-        Task UpdateRooms(Rooms rooms);
+        Task<IGenericResponse> AddRooms(Rooms rooms);
+        Task<IGenericResponse> DeleteRooms(Guid id);
+        Task<IGenericResponse> UpdateRooms(Rooms rooms);
     }
 }

@@ -37,42 +37,42 @@ namespace CriteriosDeProgramacion.Aplicacion.controller
         [HttpPost]
         public async Task<IActionResult> AddSched(Sched sched)
         {
-            var executeSchedService = await _schedService.AddSched(sched);
+            var response = await _schedService.AddSched(sched);
 
-            if (!executeSchedService.Success)
+            if (!response.Success)
             {
-                return BadRequest(executeSchedService);
+                return BadRequest(response);
             }
 
-            return Ok(executeSchedService);
+            return Ok(response);
         }
 
         [HttpPut]
         public async Task<IActionResult> UpdateSched(Sched sched)
         {
-            var excuteSchedUpdateService = await _schedService.UpdateSched(sched);
+            var response = await _schedService.UpdateSched(sched);
 
-            if (!excuteSchedUpdateService.Success)
+            if (!response.Success)
             {
-                return BadRequest(excuteSchedUpdateService);
+                return BadRequest(response);
             }
 
-            return Ok(excuteSchedUpdateService);
+            return Ok(response);
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteSched(Guid id)
         {
 
-            if (await _schedService.GetSchedById(id) == null)
+            var response = await _schedService.DeleteSched(id);
+
+            if (!response.Success)
             {
-                return BadRequest("No se encontro el sched");
+                return BadRequest(response);
             }
-            else
-            {
-                await _schedService.DeleteSched(id);
-                return Ok("Sched eliminado correctamente");
-            }
+            
+            await _schedService.DeleteSched(id);
+            return Ok(response);
         }
 
     }

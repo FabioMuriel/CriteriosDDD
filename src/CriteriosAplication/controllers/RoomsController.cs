@@ -39,29 +39,41 @@ namespace CriteriosDeProgramacion.Aplicacion.controller
         [HttpPost]
         public async Task<IActionResult> AddRooms([FromBody] Rooms rooms)
         {
-            await _roomsRepository.AddRooms(rooms);
-            return Ok(rooms);
+            var response = await _roomsRepository.AddRooms(rooms);
+
+            if (!response.Success)
+            {
+                return BadRequest(response);
+            }
+
+            return Ok(response);
         }
 
         [HttpPut]
         public async Task<IActionResult> UpdateRooms([FromBody] Rooms rooms)
         {
-            await _roomsRepository.UpdateRooms(rooms);
-            return Ok("Room actualizado correctamente");
+            var response = await _roomsRepository.UpdateRooms(rooms);
+
+            if (!response.Success)
+            {
+                return BadRequest(response);
+            }
+
+            return Ok(response);
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteRooms(Guid id)
         {
-            if (await _roomsRepository.GetRoomsById(id) == null)
+            var response = await _roomsRepository.DeleteRooms(id);
+
+            if (!response.Success)
             {
-                return BadRequest("No se encontro el room");
+                return BadRequest(response);
             }
-            else
-            {
-                await _roomsRepository.DeleteRooms(id);
-                return Ok("Room eliminado correctamente");
-            }
+
+            return Ok(response);
+
         }
     }
 }

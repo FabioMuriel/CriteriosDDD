@@ -6,8 +6,8 @@ namespace CriteriosDominio.Dominio.interfaces
     {
         Task<IEnumerable<Fisioterapeuta>> GetFisioterapeuta();
         Task<Fisioterapeuta?> GetFisioterapeutaById(Guid id);
-        Task AddFisioterapeuta(Fisioterapeuta fisioterapeuta);
-        Task DeleteFisioterapeuta(Guid id);
-        Task UpdateFisioterapeuta(Fisioterapeuta fisioterapeuta);
+        Task<IGenericResponse> AddFisioterapeuta(Fisioterapeuta fisioterapeuta);
+        Task<IGenericResponse> DeleteFisioterapeuta(Guid id);
+        Task<IGenericResponse> UpdateFisioterapeuta(Fisioterapeuta fisioterapeuta);
     }
 }

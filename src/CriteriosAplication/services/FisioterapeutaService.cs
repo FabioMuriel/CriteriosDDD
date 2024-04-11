@@ -1,41 +1,69 @@
 using CriteriosDominio.Dominio.interfaces;
 using CriteriosDominio.Dominio.Modelos.Entidades;
 
-namespace CriteriosAplicaion.Services{
+namespace CriteriosAplicaion.Services
+{
 
-    class FisioterapeutaService : IFisioterapeutaService{
+    class FisioterapeutaService : IFisioterapeutaService
+    {
 
         private readonly IFisioterapeutaRepository _fisioterapeutaRepository;
 
-        public FisioterapeutaService(IFisioterapeutaRepository fisioterapeutaRepository){
+        public FisioterapeutaService(IFisioterapeutaRepository fisioterapeutaRepository)
+        {
             _fisioterapeutaRepository = fisioterapeutaRepository;
         }
 
-        public async Task AddFisioterapeuta(Fisioterapeuta fisioterapeuta)
+        public async Task<IGenericResponse> AddFisioterapeuta(Fisioterapeuta fisioterapeuta)
         {
-            if(fisioterapeuta == null)
+            if (fisioterapeuta == null)
             {
-                throw new ArgumentException("El fisioterapeuta no puede ser nulo");
+                return new GenericResponse
+                {
+                    Success = false,
+                    Message = "El fisioterapeuta no puede ser nulo"
+                };
             }
 
-            if(fisioterapeuta.Rango == 0 || fisioterapeuta.Rango < 0 || fisioterapeuta.Rango != 10 || fisioterapeuta.Rango != 20 || fisioterapeuta.Rango != 30)
+            if (fisioterapeuta.Rango == 0 || fisioterapeuta.Rango < 0 || (fisioterapeuta.Rango != 10 && fisioterapeuta.Rango != 20 && fisioterapeuta.Rango != 30))
             {
-                throw new ArgumentException("El rango del fisioterapeuta no es valido");
+                return new GenericResponse
+                {
+                    Success = false,
+                    Message = "El rango del fisioterapeuta no es valido"
+                };
             }
 
             await _fisioterapeutaRepository.AddFisioterapeuta(fisioterapeuta);
+
+            return new GenericResponse
+            {
+                Success = true,
+                Message = "Fisioterapeuta creado correctamente"
+            };
+
         }
 
-        public async Task DeleteFisioterapeuta(Guid id)
+        public async Task<IGenericResponse> DeleteFisioterapeuta(Guid id)
         {
             Fisioterapeuta? fisioterapeuta = await _fisioterapeutaRepository.GetFisioterapeutaById(id);
 
-            if(fisioterapeuta == null)
+            if (fisioterapeuta == null)
             {
-                throw new ArgumentException("El fisioterapeuta no existe");
+                return new GenericResponse
+                {
+                    Success = false,
+                    Message = "El fisioterapeuta no existe"
+                };
             }
 
             await _fisioterapeutaRepository.DeleteFisioterapeuta(id);
+
+            return new GenericResponse
+            {
+                Success = true,
+                Message = "Fisioterapeuta eliminado correctamente"
+            };
 
         }
 
@@ -48,7 +76,7 @@ namespace CriteriosAplicaion.Services{
         {
             Fisioterapeuta? fisioterapeuta = await _fisioterapeutaRepository.GetFisioterapeutaById(id);
 
-            if(fisioterapeuta == null)
+            if (fisioterapeuta == null)
             {
                 throw new ArgumentException("El fisioterapeuta no existe");
             }
@@ -56,19 +84,40 @@ namespace CriteriosAplicaion.Services{
             return fisioterapeuta;
         }
 
-        public async Task UpdateFisioterapeuta(Fisioterapeuta fisioterapeuta)
+        public async Task<IGenericResponse> UpdateFisioterapeuta(Fisioterapeuta fisioterapeuta)
         {
-            if(fisioterapeuta == null)
+            if (fisioterapeuta == null)
             {
-                throw new ArgumentException("El fisioterapeuta no puede ser nulo");
+                return new GenericResponse
+                {
+                    Success = false,
+                    Message = "El fisioterapeuta no puede ser nulo"
+                };
             }
 
-            if(fisioterapeuta.Rango == 0 || fisioterapeuta.Rango < 0 || fisioterapeuta.Rango != 10 || fisioterapeuta.Rango != 20 || fisioterapeuta.Rango != 30)
+            if (fisioterapeuta.Rango == 0 || fisioterapeuta.Rango < 0 || fisioterapeuta.Rango != 10 || fisioterapeuta.Rango != 20 || fisioterapeuta.Rango != 30)
             {
-                throw new ArgumentException("El rango del fisioterapeuta no es valido");
+                return new GenericResponse
+                {
+                    Success = false,
+                    Message = "El rango del fisioterapeuta no es valido"
+                };
             }
 
             await _fisioterapeutaRepository.UpdateFisioterapeuta(fisioterapeuta);
+
+            return new GenericResponse
+            {
+                Success = true,
+                Message = "Fisioterapeuta actualizado correctamente"
+            };
+        }
+
+        public class GenericResponse : IGenericResponse
+        {
+            public bool Success { get; set; }
+            public string Message { get; set; }
+            public IEnumerable<string> Errors { get; set; }
         }
     }
 
