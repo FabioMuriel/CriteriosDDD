@@ -1,4 +1,5 @@
 using CriteriosAplicaion.Services;
+using CriteriosAplication.services;
 using CriteriosDominio.Dominio.interfaces;
 using CriteriosDominio.Dominio.Servicios;
 using Infrastructure.contexto;
@@ -15,13 +16,6 @@ public class Program
         builder.Services.AddDbContext<AppDbContext>(options => options.UseInMemoryDatabase("Asterisk"));
 
         //Repositories
-
-        //TODO:  Investigar si es necesari inyectar ambos
-
-        builder.Services.AddScoped<IZonaRepository, ZonasRepository>();
-        builder.Services.AddScoped<ValidadorDeRestriccionesDeZonas>();
-        builder.Services.AddScoped<ISchedRepository, SchedRepository>();
-
         builder.Services.AddScoped<IFisioterapeutaRepository, FisioterapeutaRepository>();
         builder.Services.AddScoped<IFisioterapeutaService, FisioterapeutaService>();
 
@@ -30,6 +24,12 @@ public class Program
 
         builder.Services.AddScoped<IRoomsRepository, RoomsRepository>();
         builder.Services.AddScoped<IRoomsService, RoomsService>();
+
+        builder.Services.AddScoped<ISchedRepository, SchedRepository>();
+        builder.Services.AddScoped<ISchedService, SchedService>();
+
+        builder.Services.AddScoped<IZonaRepository, ZonasRepository>();
+        builder.Services.AddScoped<IZonaService, ZonaService>();
 
         // Add services to the container.
         builder.Services.AddScoped<IValidadorDeRestriccionesDeZonas, ValidadorDeRestriccionesDeZonas>();

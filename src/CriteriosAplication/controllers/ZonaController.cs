@@ -8,54 +8,54 @@ namespace CriteriosDeProgramacion.Aplicacion.controller
     [ApiController]
     public class ZonaController : ControllerBase
     {
-        readonly IZonaRepository _zonaRepository;
-        public ZonaController(IZonaRepository zonaRepository)
+        readonly IZonaService _zonaService;
+        public ZonaController(IZonaService zonaService)
         {
-            _zonaRepository = zonaRepository;
+            _zonaService = zonaService;
         }
         [HttpGet]
         public IActionResult GetZonas()
         {
-            return Ok(_zonaRepository.GetZonas());
+            return Ok(_zonaService.GetZonas());
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetZonaById(int id)
+        public IActionResult GetZonaById(Guid id)
         {
-            if (_zonaRepository.GetZonaById(id) == null)
+            if (_zonaService.GetZonaById(id) == null)
             {
                 return BadRequest("No se encontro la zona");
             }
             else
             {
-                return Ok(_zonaRepository.GetZonaById(id));
+                return Ok(_zonaService.GetZonaById(id));
             }
         }
 
         [HttpPost]
         public IActionResult AddZona([FromBody] Zona zona)
         {
-            _zonaRepository.AddZona(zona);
+            _zonaService.AddZona(zona);
             return Ok(zona);
         }
 
         [HttpPut]
         public IActionResult UpdateZona([FromBody] Zona zona)
         {
-            _zonaRepository.UpdateZona(zona);
+            _zonaService.UpdateZona(zona);
             return Ok("Zona actualizada correctamente");
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteZona(int id)
+        public IActionResult DeleteZona(Guid id)
         {
-            if (_zonaRepository.GetZonaById(id) == null)
+            if (_zonaService.GetZonaById(id) == null)
             {
                 return BadRequest("No se encontro la zona");
             }
             else
             {
-                _zonaRepository.DeleteZona(id);
+                _zonaService.DeleteZona(id);
                 return Ok("Zona eliminada correctamente");
             }
         }

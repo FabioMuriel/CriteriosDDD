@@ -13,34 +13,43 @@ namespace Infrastructure.src.repository
         public FisioterapeutaRepository(AppDbContext context)
         {
             _context = context;
+
+            if (_context.Fisioterapeutas.CountAsync().Result == 0)
+            {
+                _context.Fisioterapeutas.Add(new Fisioterapeuta(Guid.NewGuid(), "Juan", "Perez", 10));
+                _context.Fisioterapeutas.Add(new Fisioterapeuta(Guid.NewGuid(), "Maria", "Gonzalez", 20));
+                _context.Fisioterapeutas.Add(new Fisioterapeuta(Guid.NewGuid(), "Pedro", "Rodriguez", 30));
+                _context.SaveChanges();
+            }
+
         }
 
         public async Task AddFisioterapeuta(Fisioterapeuta fisioterapeuta)
         {
             ValidationHelper.ValidateEntity(fisioterapeuta);
 
-            await _context.Fisioterapeuta.AddAsync(fisioterapeuta);
+            await _context.Fisioterapeutas.AddAsync(fisioterapeuta);
             await _context.SaveChangesAsync();
         }
 
         public async Task DeleteFisioterapeuta(Guid id)
         {
-            var fisioterapeuta = await _context.Fisioterapeuta.FindAsync(id);
+            var fisioterapeuta = await _context.Fisioterapeutas.FindAsync(id);
 
-            if(fisioterapeuta == null)
+            if (fisioterapeuta == null)
             {
                 throw new ArgumentException("El fisioterapeuta no existe");
             }
 
-            _context.Fisioterapeuta.Remove(fisioterapeuta);
+            _context.Fisioterapeutas.Remove(fisioterapeuta);
             await _context.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<Fisioterapeuta>> GetFisioterapeuta()
         {
-            var fisioterapeutas = await _context.Fisioterapeuta.ToListAsync();
+            var fisioterapeutas = await _context.Fisioterapeutas.ToListAsync();
 
-            if(fisioterapeutas == null)
+            if (fisioterapeutas == null)
             {
                 throw new ArgumentException("No hay fisioterapeutas registrados");
             }
@@ -50,9 +59,9 @@ namespace Infrastructure.src.repository
 
         public async Task<Fisioterapeuta?> GetFisioterapeutaById(Guid id)
         {
-            var fisioterapeuta = await _context.Fisioterapeuta.FindAsync(id);
+            var fisioterapeuta = await _context.Fisioterapeutas.FindAsync(id);
 
-            if(fisioterapeuta == null)
+            if (fisioterapeuta == null)
             {
                 throw new ArgumentException("El fisioterapeuta no existe");
             }
@@ -62,9 +71,9 @@ namespace Infrastructure.src.repository
 
         public async Task UpdateFisioterapeuta(Fisioterapeuta fisioterapeuta)
         {
-            var fisioterapeutaToUpdate = await _context.Fisioterapeuta.FindAsync(fisioterapeuta.FisioterapeutaId);
+            var fisioterapeutaToUpdate = await _context.Fisioterapeutas.FindAsync(fisioterapeuta.FisioterapeutaId);
 
-            if(fisioterapeutaToUpdate == null)
+            if (fisioterapeutaToUpdate == null)
             {
                 throw new ArgumentException("El fisioterapeuta no existe");
             }

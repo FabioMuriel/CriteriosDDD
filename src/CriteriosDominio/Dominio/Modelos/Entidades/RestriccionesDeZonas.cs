@@ -2,30 +2,32 @@ namespace CriteriosDominio.Dominio.Modelos.Entidades
 {
     public class RestriccionesDeZonas
     {
-        public int RestriccionesDeZonasId { get; private set; }
+        public Guid RestriccionesDeZonasId { get; private set; }
         public string Nombre { get; private set; }
         public string FromRooms { get; private set; }
         public string ToRooms { get; private set; }
         public string Regla { get; private set; }
 
-       private RestriccionesDeZonas()
+        private RestriccionesDeZonas()
         {
         }
-       
-        public RestriccionesDeZonas(string nombre, string fromRooms, string toRooms, string regla)
+
+        public RestriccionesDeZonas(Guid restriccionesDeZonaID, string nombre, string fromRooms, string toRooms, string regla)
         {
+            RestriccionesDeZonasId = SetRestriccionesDeZonasId(restriccionesDeZonaID);
             Nombre = ValidateNombre(nombre);
             FromRooms = ValidateFromRooms(fromRooms);
             ToRooms = ValidateToRooms(toRooms);
             Regla = ValidateRegla(regla);
         }
 
-        public void SetNombre(string nombre) => Nombre = nombre;
-        public void SetFromRooms(string fromRooms) => FromRooms = fromRooms;
-        public void SetToRooms(string toRooms) => ToRooms = toRooms;
-        public void SetRegla(string regla) => Regla = regla;
+        public Guid SetRestriccionesDeZonasId(Guid restriccionesDeZonasId) => RestriccionesDeZonasId = restriccionesDeZonasId;
+        public string SetNombre(string nombre) => Nombre = nombre;
+        public string SetFromRooms(string fromRooms) => FromRooms = fromRooms;
+        public string SetToRooms(string toRooms) => ToRooms = toRooms;
+        public string SetRegla(string regla) => Regla = regla;
 
-        private static string ValidateNombre (string nombre)
+        private static string ValidateNombre(string nombre)
         {
             if (string.IsNullOrEmpty(nombre))
             {
@@ -35,7 +37,7 @@ namespace CriteriosDominio.Dominio.Modelos.Entidades
             return nombre;
         }
 
-        private static string ValidateFromRooms (string fromRooms)
+        private static string ValidateFromRooms(string fromRooms)
         {
             if (string.IsNullOrEmpty(fromRooms))
             {
@@ -45,7 +47,7 @@ namespace CriteriosDominio.Dominio.Modelos.Entidades
             return fromRooms;
         }
 
-        private static string ValidateToRooms (string toRooms)
+        private static string ValidateToRooms(string toRooms)
         {
             if (string.IsNullOrEmpty(toRooms))
             {
@@ -55,7 +57,7 @@ namespace CriteriosDominio.Dominio.Modelos.Entidades
             return toRooms;
         }
 
-        private static string ValidateRegla (string regla)
+        private static string ValidateRegla(string regla)
         {
             if (string.IsNullOrEmpty(regla))
             {
@@ -63,7 +65,7 @@ namespace CriteriosDominio.Dominio.Modelos.Entidades
             }
 
             return regla;
-        } 
+        }
 
 
     }

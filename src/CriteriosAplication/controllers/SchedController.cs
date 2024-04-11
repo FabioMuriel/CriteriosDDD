@@ -8,43 +8,43 @@ namespace CriteriosDeProgramacion.Aplicacion.controller
     [ApiController]
     public class SchedController : ControllerBase
     {
-        private readonly ISchedService _schedRepository;
+        private readonly ISchedService _schedService;
 
-        public SchedController(ISchedService schedRepository)
+        public SchedController(ISchedService schedService)
         {
-            _schedRepository = schedRepository;
+            _schedService = schedService;
         }
 
         [HttpGet]
         public IActionResult GetSched()
         {
-            return Ok(_schedRepository.GetSched());
+            return Ok(_schedService.GetSched());
         }
 
         [HttpGet("{id}")]
         public IActionResult GetSchedById(Guid id)
         {
-            if (_schedRepository.GetSchedById(id) == null)
+            if (_schedService.GetSchedById(id) == null)
             {
                 return BadRequest("No se encontro el sched");
             }
             else
             {
-                return Ok(_schedRepository.GetSchedById(id));
+                return Ok(_schedService.GetSchedById(id));
             }
         }
 
         [HttpPost]
         public IActionResult AddSched(Sched sched)
         {
-            _schedRepository.AddSched(sched);
+            _schedService.AddSched(sched);
             return Ok(sched);
         }
 
         [HttpPut]
         public IActionResult UpdateSched(Sched sched)
         {
-            _schedRepository.UpdateSched(sched);
+            _schedService.UpdateSched(sched);
             return Ok("Sched actualizado correctamente");
         }
 
@@ -52,13 +52,13 @@ namespace CriteriosDeProgramacion.Aplicacion.controller
         public IActionResult DeleteSched(Guid id)
         {
 
-            if (_schedRepository.GetSchedById(id) == null)
+            if (_schedService.GetSchedById(id) == null)
             {
                 return BadRequest("No se encontro el sched");
             }
             else
             {
-                _schedRepository.DeleteSched(id);
+                _schedService.DeleteSched(id);
                 return Ok("Sched eliminado correctamente");
             }
         }

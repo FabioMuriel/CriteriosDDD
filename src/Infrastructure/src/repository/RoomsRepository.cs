@@ -13,35 +13,21 @@ namespace Infrastructure.src.repository
         public RoomsRepository(AppDbContext context)
         {
             _context = context;
-            // using (var context = new AppDbContext())
-            // {
-            //     if (!context.Rooms.Any())
-            //     {
-            //         for (int i = 0; i < 11; i++)
-            //         {
-            //             context.Rooms.Add(new Rooms
-            //             {
-            //                 RoomId = i + 1,
-            //                 Nombre = "CAMILLA " + i,
-            //                 ZonaId = 1,
-            //                 ColumnOrder = i
-            //             });
-            //         }
 
-            //         for (int i = 12; i < 19; i++)
-            //         {
-            //             context.Rooms.Add(new Rooms
-            //             {
-            //                 RoomId = i,
-            //                 Nombre = "MANO " + i,
-            //                 ZonaId = 2,
-            //                 ColumnOrder = i - 1
-            //             });
-            //         }
+            if (_context.Rooms.CountAsync().Result == 0)
+            {
+                for (int i = 0; i < 11; i++)
+                {
+                    context.Rooms.Add(new Rooms(Guid.NewGuid(), "CAMILLA " + i, 1, i));
+                }
 
-            //         context.SaveChanges();
-            //     }
-            // }
+                for (int i = 12; i < 19; i++)
+                {
+                    context.Rooms.Add(new Rooms(Guid.NewGuid(), "MANO " + i, 2, i - 1));
+                }
+
+                context.SaveChanges();
+            }
         }
 
         public async Task AddRooms(Rooms rooms)
@@ -55,7 +41,7 @@ namespace Infrastructure.src.repository
 
         public async Task<IEnumerable<Rooms>> GetRooms()
         {
- 
+
             var rooms = await _context.Rooms.ToListAsync();
 
             if (rooms == null)

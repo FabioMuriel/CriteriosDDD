@@ -18,11 +18,11 @@ namespace Infrastructure.src.repository
         public async Task AddSched(Sched sched)
         {
             ValidationHelper.ValidateEntity(sched);
+
             await _context.Sched.AddAsync(sched);
             await _context.SaveChangesAsync();
         }
 
-        //TODO: Implementar el metodo DeleteSched
         public async Task DeleteSched(Guid id)
         {
             var sched = await _context.Sched.FindAsync(id);
@@ -37,7 +37,15 @@ namespace Infrastructure.src.repository
 
         public async Task<IEnumerable<Sched>> GetSched()
         {
-            return await _context.Sched.ToListAsync();   
+            var sched = await _context.Sched.ToListAsync();
+
+            if (sched == null)
+            {
+                throw new Exception("Sched not found");
+            }
+
+            return sched;
+
         }
 
         public async Task<Sched> GetSchedById(Guid id)
