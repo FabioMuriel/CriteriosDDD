@@ -17,6 +17,7 @@ namespace Infrastructure.src.repository
 
             if (_context.RestriccionesDeZonas.CountAsync().Result == 0)
             {
+                //TODO: Agregar el resto de criterios
                 _context.RestriccionesDeZonas.Add(new RestriccionesDeZonas(
                         Guid.NewGuid(),
                         "Restriccion 1",
