@@ -4,9 +4,8 @@ using CriteriosDominio.Dominio.Modelos.Entidades;
 namespace CriteriosAplicaion.Services
 {
 
-    class FisioterapeutaService : IFisioterapeutaService
+    public class FisioterapeutaService : IFisioterapeutaService
     {
-
         private readonly IFisioterapeutaRepository _fisioterapeutaRepository;
 
         public FisioterapeutaService(IFisioterapeutaRepository fisioterapeutaRepository)
@@ -84,6 +83,7 @@ namespace CriteriosAplicaion.Services
             return fisioterapeuta;
         }
 
+        //TODO: Implementar Logica para no repetir el codigo del return
         public async Task<IGenericResponse> UpdateFisioterapeuta(Fisioterapeuta fisioterapeuta)
         {
             if (fisioterapeuta == null)

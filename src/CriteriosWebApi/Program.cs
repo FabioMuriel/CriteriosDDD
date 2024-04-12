@@ -1,6 +1,5 @@
 using CriteriosAplicaion.inerfaces;
 using CriteriosAplicaion.Services;
-using CriteriosAplication.services;
 using CriteriosDominio.Dominio.interfaces;
 using CriteriosDominio.Dominio.Servicios;
 using Infrastructure.contexto;

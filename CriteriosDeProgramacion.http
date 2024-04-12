@@ -1,6 +1,0 @@
-@CriteriosDeProgramacion_HostAddress = http://localhost:5186
-
-GET {{CriteriosDeProgramacion_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

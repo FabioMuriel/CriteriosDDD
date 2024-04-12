@@ -14,7 +14,7 @@ namespace CriteriosDominio.Dominio.Modelos.Entidades
             Apellido = ValidarApellidoFisioterapeuta(apellido);
             Rango = ValidarRangoFisioterapeuta(rango);
         }
-        
+
         public Guid SetFisioterapeutaId(Guid fisioterapeutaId) => FisioterapeutaId = fisioterapeutaId;
         public string SetNombre(string nombre) => Nombre = ValidarNombreFisioterapeuta(nombre);
         public string SetApellido(string apellido) => Apellido = ValidarApellidoFisioterapeuta(apellido);

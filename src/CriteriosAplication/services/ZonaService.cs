@@ -1,7 +1,7 @@
 using CriteriosDominio.Dominio.interfaces;
 using CriteriosDominio.Dominio.Modelos.Entidades;
 
-namespace CriteriosAplication.services
+namespace CriteriosAplicaion.Services
 {
     public class ZonaService : IZonaService
     {
@@ -30,7 +30,7 @@ namespace CriteriosAplication.services
                 Success = true,
                 Message = "Zona creada correctamente"
             };
-            
+
         }
 
         public async Task<IGenericResponse> DeleteZona(Guid id)
