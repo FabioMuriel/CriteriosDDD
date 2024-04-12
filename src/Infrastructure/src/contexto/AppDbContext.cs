@@ -30,18 +30,7 @@ namespace Infrastructure.contexto
             modelBuilder.Entity<Sched>()
                 .Property(s => s.SchedId)
                 .ValueGeneratedOnAdd();
-
-            // Llamamos al método para inicializar los datos
-            SeedInitialData(modelBuilder);
         }
 
-        private void SeedInitialData(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Fisioterapeuta>().HasData(
-                new Fisioterapeuta(Guid.NewGuid(), "Juan", "Perez", 10),
-                new Fisioterapeuta(Guid.NewGuid(), "Maria", "Gonzalez", 20),
-                new Fisioterapeuta(Guid.NewGuid(), "Pedro", "Rodriguez", 30)
-            );
-        }
     }
 }

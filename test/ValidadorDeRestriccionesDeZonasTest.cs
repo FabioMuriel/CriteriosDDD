@@ -314,6 +314,70 @@ namespace test
             Assert.Equal(string.Empty, response.Mensaje);
         }
 
+        [Fact]
+        public async Task AgendarEnMismaZonaCamilla(){
+            var context = CreateMemoryContext("AgendarEnMismaZonaCamilla");
+            var restriccionesDeZonasRepository = new RestriccionesDeZonasRepository(context);
+            var roomsRepository = new RoomsRepository(context);
+            var schedRepository = new SchedRepository(context);
+            var fisioterapeutaRepository = new FisioterapeutaRepository(context);
+
+            var fisioterapeuta = fisioterapeutaRepository.GetFisioterapeutaById(Guid.Parse("cc4e89ef-4ee5-4388-a90f-2f646aeeaa64")).Result;
+            var room = roomsRepository.GetRoomsById(Guid.Parse("e584c1e6-23cd-4c55-a534-8620e433415a")).Result;
+            var sched = new Sched(Guid.Parse("79015099-8131-4751-be39-c27621dcec3b"), fisioterapeuta.FisioterapeutaId, room.RoomId, 6, "2024-12-12");
+
+            await schedRepository.AddSched(sched);
+
+            var roomDondeSeQuiereAgendar = roomsRepository.GetRoomsById(Guid.Parse("306f349a-d9b6-4700-a149-3c780d0d74a9")).Result;
+
+            ValidadorDeRestriccionesDeZonas validador = new ValidadorDeRestriccionesDeZonas(restriccionesDeZonasRepository, roomsRepository, schedRepository, fisioterapeutaRepository);
+
+            var request = new ValidadorDeRestriccionesDeZonasRequest
+            {
+                RoomId = roomDondeSeQuiereAgendar.RoomId,
+                FisioterapeutaId = fisioterapeuta.FisioterapeutaId,
+                Hora = 6,
+                Fecha = "2024-12-12"
+            };
+
+            var response = await validador.ValidarRestricciones(request);
+
+            Assert.True(response.Success);
+            Assert.Equal(string.Empty, response.Mensaje);
+        }
+
+        [Fact]
+        public async Task AgendarEnMismaZonaMano(){
+            var context = CreateMemoryContext("AgendarEnMismaZonaMano");
+            var restriccionesDeZonasRepository = new RestriccionesDeZonasRepository(context);
+            var roomsRepository = new RoomsRepository(context);
+            var schedRepository = new SchedRepository(context);
+            var fisioterapeutaRepository = new FisioterapeutaRepository(context);
+
+            var fisioterapeuta = fisioterapeutaRepository.GetFisioterapeutaById(Guid.Parse("cc4e89ef-4ee5-4388-a90f-2f646aeeaa64")).Result;
+            var room = roomsRepository.GetRoomsById(Guid.Parse("93126113-be52-4008-9d1e-90aee0e53a70")).Result;
+            var sched = new Sched(Guid.Parse("79015099-8131-4751-be39-c27621dcec3b"), fisioterapeuta.FisioterapeutaId, room.RoomId, 6, "2024-12-12");
+
+            await schedRepository.AddSched(sched);
+
+            var roomDondeSeQuiereAgendar = roomsRepository.GetRoomsById(Guid.Parse("8f9be634-4864-475e-a08d-a94ec25b8d78")).Result;
+
+            ValidadorDeRestriccionesDeZonas validador = new ValidadorDeRestriccionesDeZonas(restriccionesDeZonasRepository, roomsRepository, schedRepository, fisioterapeutaRepository);
+
+            var request = new ValidadorDeRestriccionesDeZonasRequest
+            {
+                RoomId = roomDondeSeQuiereAgendar.RoomId,
+                FisioterapeutaId = fisioterapeuta.FisioterapeutaId,
+                Hora = 6,
+                Fecha = "2024-12-12"
+            };
+
+            var response = await validador.ValidarRestricciones(request);
+
+            Assert.True(response.Success);
+            Assert.Equal(string.Empty, response.Mensaje);
+        }
+
 
     }
 }

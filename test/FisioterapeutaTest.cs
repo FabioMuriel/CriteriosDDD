@@ -14,7 +14,7 @@ namespace test
         }
 
         private static AppDbContext CreateMemoryContext(string databaseName)
-        {
+        {   
             var options = new DbContextOptionsBuilder<AppDbContext>()
                 .UseInMemoryDatabase(databaseName: databaseName)
                 .EnableSensitiveDataLogging()

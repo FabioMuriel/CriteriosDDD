@@ -17,10 +17,10 @@ namespace Infrastructure.src.repository
             DateTime fecha = DateTime.Now;
             string fechaFormateada = fecha.ToString("yyyy/MM/dd");
 
-
             if (_context.Sched.CountAsync().Result == 0)
             {
-                _context.Sched.Add(new Sched(
+                _context.Sched.Add(
+                    new Sched(
                         Guid.Parse("7b87ce3c-e801-4f82-9de5-5bd49fe50031"),
                         Guid.Parse("cc4e89ef-4ee5-4388-a90f-2f646aeeaa64"),
                         Guid.Parse("e584c1e6-23cd-4c55-a534-8620e433415a"),
