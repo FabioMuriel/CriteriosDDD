@@ -10,15 +10,16 @@ namespace CriteriosDominio.Dominio.interfaces
     public interface IValidadorDeRestriccionesDeZonasResult
     {
         bool Success { get; set; }
-        bool isValid { get; set; }
-        string mensaje { get; set; }
+        bool IsValid { get; set; }
+        string Mensaje { get; set; }
+        IEnumerable<string>? Errores { get; set; }
     }
 
     public interface IRestriccionesDeZonasRequest
     {
-        Guid roomId { get; set; }
-        Guid fisioterapeutaId { get; set; }
-        int hora { get; set; }
-        string fecha { get; set; }
+        Guid RoomId { get; set; }
+        Guid FisioterapeutaId { get; set; }
+        int Hora { get; set; }
+        string Fecha { get; set; }
     }
 }

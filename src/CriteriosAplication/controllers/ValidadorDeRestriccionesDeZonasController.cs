@@ -20,7 +20,7 @@ namespace CriteriosDeProgramacion.Aplicacion.controller
         {
             var result = await _validadorDeRestriccionesDeZonas.ValidarRestricciones(request);
 
-            if (!result.isValid)
+            if (!result.IsValid)
             {
                 return BadRequest(result);
             }

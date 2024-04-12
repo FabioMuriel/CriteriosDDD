@@ -130,10 +130,10 @@ namespace CriteriosAplicaion.Services
             var criterioDeEspacio = await _validadorDeRestriccionesDeZonas.ValidarRestricciones(
                 new ValidadorDeRestriccionesDeZonasRequest
                 {
-                    roomId = RoomId,
-                    fisioterapeutaId = FisioterapeutaId,
-                    hora = Hora,
-                    fecha = Fecha
+                    RoomId = RoomId,
+                    FisioterapeutaId = FisioterapeutaId,
+                    Hora = Hora,
+                    Fecha = Fecha
                 }
             );
 
@@ -142,9 +142,9 @@ namespace CriteriosAplicaion.Services
                 errores.Add(espacioDisponible.Message);
             }
 
-            if(criterioDeEspacio.isValid == false)
+            if(criterioDeEspacio.IsValid == false)
             {
-                errores.Add(criterioDeEspacio.mensaje);
+                errores.Add(criterioDeEspacio.Mensaje);
             }
 
             return errores;
