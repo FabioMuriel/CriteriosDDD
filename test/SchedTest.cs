@@ -27,6 +27,7 @@ namespace test
             return context;
         }
 
+        //TODO: Implementar pruebas unitarias para el método AddSched
         [Fact]
         public async Task AddSchedTest()
         {
