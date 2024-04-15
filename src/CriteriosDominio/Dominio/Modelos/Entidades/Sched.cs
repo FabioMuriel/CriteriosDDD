@@ -37,6 +37,7 @@ namespace CriteriosDominio.Dominio.Modelos.Entidades
             return schedId;
         }
 
+        
         public static Guid ValidarFisioterapeutaId(Guid fisioterapeutaId)
         {
             if (fisioterapeutaId == Guid.Empty)
